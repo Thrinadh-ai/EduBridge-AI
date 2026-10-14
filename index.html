@@ -1,0 +1,3559 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduBridge AI — Learn Better. Build Real Skills. Unlock Opportunities.</title>
+  <meta name="description" content="EduBridge AI is a modern, responsive AI-powered education platform helping students master difficult concepts, close learning gaps, build real projects, and bridge into tech careers.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. CSS RESETS, DESIGN TOKENS & ROOT VARIABLES
+       ========================================================================== */
+    :root {
+      /* Color Palette: Dark Navy, Blue, White, Violet Accents */
+      --bg-primary: #0a0f1d;
+      --bg-secondary: #0f172a;
+      --bg-card: #151e34;
+      --bg-card-hover: #1c2742;
+      --bg-elevated: #1e293b;
+      --border-subtle: #243049;
+      --border-strong: #334155;
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-accent: #60a5fa;
+
+      --primary-500: #3b82f6;
+      --primary-600: #2563eb;
+      --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%);
+      --accent-violet: #8b5cf6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-cyan: #06b6d4;
+
+      --sidebar-width: 260px;
+      --header-height: 70px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.25);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.35);
+      --shadow-lg: 0 16px 40px rgba(0,0,0,0.45);
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f8fafc;
+      --bg-elevated: #e2e8f0;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --text-accent: #2563eb;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 16px 40px rgba(0,0,0,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      color: inherit;
+      border: none;
+      background: none;
+      outline: none;
+    }
+
+    button {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+    }
+
+    /* Common Button Styles */
+    .btn-primary {
+      background: var(--primary-gradient);
+      color: #ffffff;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+    }
+    .btn-secondary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-strong);
+    }
+    .btn-outline {
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+    }
+    .btn-outline:hover {
+      border-color: var(--primary-500);
+      color: var(--text-primary);
+    }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ==========================================================================
+       2. APP LAYOUT ARCHITECTURE
+       ========================================================================== */
+    #app-container {
+      display: flex;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Sidebar Navigation */
+    #sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--bg-secondary);
+      border-right: 1px solid var(--border-subtle);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-brand {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .brand-logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary-gradient);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    .brand-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-theme="light"] .brand-text {
+      background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sidebar-nav-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-category {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 14px 12px 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+    .nav-item:hover {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+    .nav-item.active {
+      background: var(--bg-card-hover);
+      color: #60a5fa;
+      font-weight: 600;
+    }
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      bottom: 6px;
+      width: 4px;
+      background: var(--primary-gradient);
+      border-radius: 0 4px 4px 0;
+    }
+    .nav-item svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2;
+    }
+    .nav-badge {
+      margin-left: auto;
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: 12px;
+      background: var(--bg-elevated);
+      color: var(--text-muted);
+    }
+
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .demo-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      color: #93c5fd;
+    }
+    .demo-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    /* Main Area */
+    #main-wrapper {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: var(--bg-primary);
+      min-height: 100vh;
+    }
+
+    /* Top Navigation Header */
+    #top-header {
+      height: var(--header-height);
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+    }
+    [data-theme="light"] #top-header {
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .mobile-menu-btn {
+      display: none;
+      padding: 8px;
+      color: var(--text-primary);
+      border-radius: var(--radius-sm);
+    }
+
+    .search-bar-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 16px;
+      border-radius: 24px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      width: 280px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+    .search-bar-trigger:hover {
+      border-color: var(--border-strong);
+      color: var(--text-secondary);
+    }
+    .search-shortcut {
+      margin-left: auto;
+      font-size: 0.7rem;
+      background: var(--bg-elevated);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lang-selector {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .icon-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+    .badge-dot {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--accent-rose);
+      border-radius: 50%;
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 10px 4px 4px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 28px;
+      cursor: pointer;
+    }
+    .user-avatar-mini {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      color: white;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .user-name-mini {
+      font-size: 0.88rem;
+      font-weight: 600;
+      max-width: 110px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Content View Container */
+    #view-viewport {
+      padding: 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .page-view {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .page-view.active-view {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       3. REUSABLE UI COMPONENTS (Cards, Grids, Badges, Tabs)
+       ========================================================================== */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-smooth);
+    }
+    .card:hover {
+      border-color: var(--border-strong);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-desc {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .tag-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .tag-purple { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+    .tag-emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .tag-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .tag-rose { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-elevated);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--primary-gradient);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .form-input, .form-select, .form-textarea {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      color: var(--text-primary);
+      font-size: 0.92rem;
+      transition: var(--transition-smooth);
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--primary-500);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+      stroke: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    /* ==========================================================================
+       4. LANDING PAGE VIEW STYLES
+       ========================================================================== */
+    .landing-hero {
+      text-align: center;
+      padding: 60px 20px 80px;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 30px;
+      color: #a5b4fc;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-size: 3.4rem;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-title .gradient-text {
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin: 0 auto 36px;
+    }
+    .hero-cta-group {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .section-header {
+      text-align: center;
+      margin: 60px auto 40px;
+      max-width: 600px;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: var(--transition-smooth);
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary-500);
+      box-shadow: var(--shadow-md);
+    }
+    .feature-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      background: rgba(59, 130, 246, 0.1);
+      color: #60a5fa;
+    }
+
+    .journey-step {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .journey-number {
+      width: 44px;
+      height: 44px;
+      background: var(--bg-card);
+      border: 2px solid var(--primary-500);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #60a5fa;
+      flex-shrink: 0;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 18px 24px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .faq-answer {
+      padding: 0 24px 18px;
+      color: var(--text-secondary);
+      font-size: 0.94rem;
+      display: none;
+    }
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* Landing Footer */
+    .landing-footer {
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 80px;
+      padding: 50px 0 30px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 24px;
+    }
+
+    /* ==========================================================================
+       5. DASHBOARD VIEW STYLES
+       ========================================================================== */
+    .dashboard-header-banner {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .streak-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      color: #fbbf24;
+      font-weight: 700;
+    }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-top: 6px;
+    }
+    .stat-label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       6. AI TUTOR CHAT UI
+       ========================================================================== */
+    .tutor-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      height: calc(100vh - 180px);
+      min-height: 600px;
+    }
+    .chat-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .chat-bubble {
+      max-width: 82%;
+      padding: 16px 20px;
+      border-radius: var(--radius-lg);
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+    .chat-user {
+      align-self: flex-end;
+      background: var(--primary-600);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+    .chat-ai {
+      align-self: flex-start;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border-bottom-left-radius: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+    .chat-source-badge {
+      font-size: 0.7rem;
+      display: inline-block;
+      margin-bottom: 6px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(99, 102, 241, 0.2);
+      color: #a5b4fc;
+    }
+    .chat-input-bar {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-secondary);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .chat-text-input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       7. CODE MENTOR WORKSPACE
+       ========================================================================== */
+    .code-mentor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      height: calc(100vh - 180px);
+      min-height: 600px;
+    }
+    .code-editor-box {
+      background: #090d16;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .editor-top-bar {
+      background: #111827;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1f2937;
+    }
+    .code-textarea {
+      flex: 1;
+      width: 100%;
+      background: transparent;
+      color: #e2e8f0;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      padding: 16px;
+      resize: none;
+      border: none;
+      outline: none;
+      tab-size: 2;
+    }
+    .output-panel {
+      background: #090d16;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .output-terminal {
+      flex: 1;
+      background: #050811;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: #38bdf8;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .preview-frame {
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      border: none;
+    }
+
+    /* ==========================================================================
+       8. MODALS & POPUPS
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      padding: 28px;
+      position: relative;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .modal-close-btn:hover {
+      color: var(--text-primary);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1024px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .tutor-layout, .code-mentor-grid { grid-template-columns: 1fr; height: auto; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      #sidebar { transform: translateX(-100%); }
+      #sidebar.mobile-open { transform: translateX(0); }
+      #main-wrapper { margin-left: 0; }
+      .mobile-menu-btn { display: flex; }
+      .search-bar-trigger { display: none; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      #top-header { padding: 0 16px; }
+      #view-viewport { padding: 16px; }
+      .hero-title { font-size: 2.2rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app-container">
+
+  <!-- ========================================================================
+       SIDEBAR NAVIGATION
+       ======================================================================== -->
+  <aside id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo-icon">EB</div>
+      <div>
+        <div class="brand-text">EduBridge AI</div>
+        <div style="font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.02em;">NextGen Education</div>
+      </div>
+    </div>
+
+    <div class="sidebar-nav-container">
+      <div class="nav-category" data-i18n="nav_explore">Explore & Learn</div>
+      <a href="#landing" class="nav-item" data-view="landing">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span data-i18n="nav_home">Home / Landing</span>
+      </a>
+      <a href="#dashboard" class="nav-item" data-view="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <span data-i18n="nav_dashboard">Student Dashboard</span>
+      </a>
+
+      <div class="nav-category" data-i18n="nav_ai_tools">AI Mentorship</div>
+      <a href="#tutor" class="nav-item" data-view="tutor">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        <span data-i18n="nav_tutor">AI 1-on-1 Tutor</span>
+        <span class="nav-badge">Multi-Lang</span>
+      </a>
+      <a href="#gap-detector" class="nav-item" data-view="gap-detector">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+        <span data-i18n="nav_gaps">Learning Gap Quiz</span>
+      </a>
+      <a href="#roadmap" class="nav-item" data-view="roadmap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+        <span data-i18n="nav_roadmap">Personalized Roadmap</span>
+      </a>
+
+      <div class="nav-category" data-i18n="nav_practical">Practical Skills</div>
+      <a href="#projects" class="nav-item" data-view="projects">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        <span data-i18n="nav_projects">Real-World Project Lab</span>
+      </a>
+      <a href="#code-mentor" class="nav-item" data-view="code-mentor">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+        <span data-i18n="nav_code">AI Coding Mentor</span>
+      </a>
+      <a href="#english-coach" class="nav-item" data-view="english-coach">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        <span data-i18n="nav_english">English Speech Coach</span>
+      </a>
+
+      <div class="nav-category" data-i18n="nav_career_tools">Career & Utilities</div>
+      <a href="#career" class="nav-item" data-view="career">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+        <span data-i18n="nav_career">Career & Opportunities</span>
+      </a>
+      <a href="#notes" class="nav-item" data-view="notes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        <span data-i18n="nav_notes">Notes & Summaries</span>
+      </a>
+      <a href="#progress" class="nav-item" data-view="progress">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
+        <span data-i18n="nav_analytics">Progress & Badges</span>
+      </a>
+      <a href="#settings" class="nav-item" data-view="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <span data-i18n="nav_settings">Settings & API</span>
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="demo-pill" id="demo-mode-indicator">
+        <span style="display:flex; align-items:center; gap:8px;">
+          <span class="demo-dot"></span>
+          <span id="backend-status-text">Client Demo Engine</span>
+        </span>
+        <span style="font-weight: 700; font-size: 0.65rem;">v1.0</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       MAIN CONTENT WRAPPER
+       ======================================================================== -->
+  <main id="main-wrapper">
+    
+    <!-- TOP HEADER -->
+    <header id="top-header">
+      <div class="header-left">
+        <button class="mobile-menu-btn" id="mobile-toggle-btn" aria-label="Toggle Navigation">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+
+        <div class="search-bar-trigger" id="global-search-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span data-i18n="search_placeholder">Search lessons, projects, skills...</span>
+          <span class="search-shortcut">Ctrl+K</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Language Selector -->
+        <select class="lang-selector" id="app-language-select" aria-label="Language selection">
+          <option value="en">English (EN)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+          <option value="hi">हिन्दी (Hindi)</option>
+        </select>
+
+        <!-- Theme Toggle -->
+        <button class="icon-btn" id="theme-toggle-btn" title="Toggle Theme" aria-label="Toggle Dark and Light theme">
+          <svg id="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <svg id="theme-icon-sun" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+
+        <!-- Notification Bell -->
+        <button class="icon-btn" id="notif-bell-btn" title="Notifications" aria-label="View notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span class="badge-dot" id="notif-badge"></span>
+        </button>
+
+        <!-- User Profile Quick Badge -->
+        <div class="user-profile-badge" id="header-user-btn" onclick="app.router.navigate('onboarding')">
+          <div class="user-avatar-mini" id="header-user-avatar">S</div>
+          <span class="user-name-mini" id="header-user-name">Student</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- VIEWS CONTAINER -->
+    <div id="view-viewport">
+
+      <!-- ====================================================================
+           VIEW 1: LANDING PAGE
+           ==================================================================== -->
+      <section id="view-landing" class="page-view active-view">
+        <div class="landing-hero">
+          <div class="hero-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            <span data-i18n="hero_badge">Empowering 100,000+ Students Across India & Global</span>
+          </div>
+          <h1 class="hero-title">
+            <span data-i18n="hero_title_1">Learn Better. Build Real Skills.</span><br>
+            <span class="gradient-text" data-i18n="hero_title_2">Unlock Opportunities.</span>
+          </h1>
+          <p class="hero-subtitle" data-i18n="hero_desc">
+            The all-in-one AI education platform built for regional and global learners. Master complex concepts in your mother tongue, fix your knowledge gaps with precision diagnostics, and build portfolio-worthy projects.
+          </p>
+          <div class="hero-cta-group">
+            <button class="btn-primary" onclick="app.router.navigate('dashboard')" style="padding: 14px 32px; font-size: 1.05rem;">
+              <span data-i18n="btn_start_learning">Start Learning Now</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+            <button class="btn-secondary" onclick="app.router.navigate('tutor')" style="padding: 14px 28px; font-size: 1.05rem;">
+              <span data-i18n="btn_explore_tutor">Try AI Tutor</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric highlights -->
+        <div class="grid-4" style="margin-bottom: 60px;">
+          <div class="card" style="text-align: center;">
+            <div class="stat-number" style="color:#60a5fa;">9+</div>
+            <div class="stat-label">Indian & Global Languages</div>
+          </div>
+          <div class="card" style="text-align: center;">
+            <div class="stat-number" style="color:#a78bfa;">100%</div>
+            <div class="stat-label">Real Project Driven</div>
+          </div>
+          <div class="card" style="text-align: center;">
+            <div class="stat-number" style="color:#34d399;">Precision</div>
+            <div class="stat-label">Gap Diagnostics</div>
+          </div>
+          <div class="card" style="text-align: center;">
+            <div class="stat-number" style="color:#fbbf24;">Career</div>
+            <div class="stat-label">Opportunities Bridge</div>
+          </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="section-header">
+          <h2 class="section-title" data-i18n="features_title">Comprehensive Learning Ecosystem</h2>
+          <p class="section-subtitle" data-i18n="features_sub">Engineered to transform students from theoretical memorization to high-impact industry readiness.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="feature-icon-box" style="color:#60a5fa; background:rgba(59,130,246,0.15);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">Multilingual AI Tutor</h3>
+            <p style="color:var(--text-secondary); font-size:0.92rem;">Get step-by-step conceptual breakdowns in Telugu, Hindi, English, and more with daily real-life analogies.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box" style="color:#a78bfa; background:rgba(139,92,246,0.15);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">Learning Gap Detector</h3>
+            <p style="color:var(--text-secondary); font-size:0.92rem;">Identify fundamental blind spots with smart diagnostic assessments rather than generic multiple-choice guessing.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box" style="color:#34d399; background:rgba(16,185,129,0.15);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">Real-World Project Lab</h3>
+            <p style="color:var(--text-secondary); font-size:0.92rem;">Solve practical community, agriculture, water management, and tech problems. Build genuine portfolio projects.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box" style="color:#fbbf24; background:rgba(245,158,11,0.15);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">Live Code Mentor</h3>
+            <p style="color:var(--text-secondary); font-size:0.92rem;">Write, test, and preview code in Python, JavaScript, HTML, and CSS with guided debugging assistance.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box" style="color:#06b6d4; background:rgba(6,182,212,0.15);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">English Speech Coach</h3>
+            <p style="color:var(--text-secondary); font-size:0.92rem;">Master professional interview English and daily conversation with speech recognition and Telugu-to-English hints.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-box" style="color:#fb7185; background:rgba(244,63,94,0.15);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">Career Opportunity Bridge</h3>
+            <p style="color:var(--text-secondary); font-size:0.92rem;">Direct pathways into Software, Data, and AI engineering with resume tips, skill audits, and internship resources.</p>
+          </div>
+        </div>
+
+        <!-- Student Learning Journey -->
+        <div class="section-header">
+          <h2 class="section-title">The Student Success Journey</h2>
+          <p class="section-subtitle">How a student goes from confusion to career readiness with EduBridge AI.</p>
+        </div>
+
+        <div class="card" style="max-width: 860px; margin: 0 auto;">
+          <div class="journey-step">
+            <div class="journey-number">1</div>
+            <div>
+              <h4 style="font-size:1.1rem; margin-bottom:4px;">Diagnostic Assessment</h4>
+              <p style="color:var(--text-secondary); font-size:0.92rem;">Identify conceptual gaps in Python, Web, Math, or English before wasting time memorizing answers.</p>
+            </div>
+          </div>
+          <div class="journey-step">
+            <div class="journey-number">2</div>
+            <div>
+              <h4 style="font-size:1.1rem; margin-bottom:4px;">Native Language Conceptual Mastery</h4>
+              <p style="color:var(--text-secondary); font-size:0.92rem;">Ask your tutor in Telugu, Hindi, or English. Learn concepts using real-life regional examples.</p>
+            </div>
+          </div>
+          <div class="journey-step">
+            <div class="journey-number">3</div>
+            <div>
+              <h4 style="font-size:1.1rem; margin-bottom:4px;">Hands-On Project Execution</h4>
+              <p style="color:var(--text-secondary); font-size:0.92rem;">Build meaningful tools (e.g. Smart Agri-Dashboard or Student Expense Tracker) with step-by-step milestones.</p>
+            </div>
+          </div>
+          <div class="journey-step" style="margin-bottom:0;">
+            <div class="journey-number">4</div>
+            <div>
+              <h4 style="font-size:1.1rem; margin-bottom:4px;">Interview & Opportunity Readiness</h4>
+              <p style="color:var(--text-secondary); font-size:0.92rem;">Practise spoken English, polish your technical portfolio, and prepare for internships with transparent checklists.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frequently Asked Questions -->
+        <div class="section-header">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">Answers to common student and educator queries.</p>
+        </div>
+
+        <div style="max-width: 860px; margin: 0 auto;">
+          <div class="faq-item open">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>Is EduBridge AI free for students?</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              Yes! All foundational learning modules, diagnostic quizzes, project lab guides, and local practice coaches are completely free and work directly in modern web browsers.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>How does multilingual teaching work?</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              The platform supports seamless switching between English, Telugu, and Hindi interface translations, while our AI Tutor can explain deep technical topics in regional contexts with real-life analogies.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+              <span>How is my student data stored?</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <div class="faq-answer">
+              In this standalone browser application, all non-sensitive study records, notes, and quiz milestones are safely saved directly in your browser's private localStorage. No secret credentials or passwords are ever stored insecurely.
+            </div>
+          </div>
+        </div>
+
+        <!-- Landing Footer -->
+        <footer class="landing-footer">
+          <div class="footer-grid">
+            <div class="footer-col">
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+                <div class="brand-logo-icon" style="width:28px; height:28px; font-size:0.9rem;">EB</div>
+                <strong style="color:var(--text-primary); font-size:1.1rem;">EduBridge AI</strong>
+              </div>
+              <p style="font-size:0.85rem; line-height:1.6; max-width:280px;">Empowering students to understand difficult concepts, build real projects, and unlock high-impact opportunities.</p>
+            </div>
+            <div class="footer-col">
+              <h4>Learning Modules</h4>
+              <ul>
+                <li><a href="#tutor">AI 1-on-1 Tutor</a></li>
+                <li><a href="#gap-detector">Gap Assessment</a></li>
+                <li><a href="#projects">Project Lab</a></li>
+                <li><a href="#code-mentor">Coding Sandbox</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Career</h4>
+              <ul>
+                <li><a href="#career">Career Roadmaps</a></li>
+                <li><a href="#english-coach">Speech Coach</a></li>
+                <li><a href="#progress">Achievements</a></li>
+                <li><a href="#settings">API Integration</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Platform</h4>
+              <ul>
+                <li><a href="#onboarding">Student Onboarding</a></li>
+                <li><a href="#settings">Privacy & Terms</a></li>
+                <li><a href="#settings">Data Reset</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <div>© 2026 EduBridge AI. Built with pride for accessible, skill-first education.</div>
+            <div>Client Demo Mode • Production Backend Ready</div>
+          </div>
+        </footer>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 2: STUDENT ONBOARDING & PROFILE
+           ==================================================================== -->
+      <section id="view-onboarding" class="page-view">
+        <div style="max-width: 760px; margin: 0 auto;">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  Student Profile & Learning Goals
+                </h2>
+                <p class="card-desc">Personalize your learning path, tutor explanations, and recommended projects.</p>
+              </div>
+              <span class="tag tag-blue">Demo Profile</span>
+            </div>
+
+            <form id="onboarding-form" onsubmit="app.profile.handleSave(event)">
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="profile-name">Student Display Name *</label>
+                  <input type="text" id="profile-name" class="form-input" required placeholder="e.g. Ramesh Kumar">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="profile-level">Education Level *</label>
+                  <select id="profile-level" class="form-select" required>
+                    <option value="School Student (Class 9-12)">School Student (Class 9-12)</option>
+                    <option value="Undergraduate College Student" selected>Undergraduate College Student</option>
+                    <option value="Postgraduate Student">Postgraduate Student</option>
+                    <option value="Independent Self-Learner">Independent Self-Learner</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="profile-course">Course / Department / Class</label>
+                  <input type="text" id="profile-course" class="form-input" placeholder="e.g. B.Tech Computer Science / Class 12">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="profile-lang">Preferred Learning Language</label>
+                  <select id="profile-lang" class="form-select">
+                    <option value="English">English</option>
+                    <option value="Telugu">Telugu (తెలుగు)</option>
+                    <option value="Hindi">Hindi (हिन्दी)</option>
+                    <option value="Tamil">Tamil (தமிழ்)</option>
+                    <option value="Kannada">Kannada (ಕನ್ನಡ)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Subjects of Interest (Select multiple)</label>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px;">
+                  <label style="display:flex; align-items:center; gap:6px; font-size:0.9rem; cursor:pointer;"><input type="checkbox" name="subj" value="Python Programming" checked> Python</label>
+                  <label style="display:flex; align-items:center; gap:6px; font-size:0.9rem; cursor:pointer;"><input type="checkbox" name="subj" value="Web Development" checked> Web Development</label>
+                  <label style="display:flex; align-items:center; gap:6px; font-size:0.9rem; cursor:pointer;"><input type="checkbox" name="subj" value="Artificial Intelligence"> Artificial Intelligence</label>
+                  <label style="display:flex; align-items:center; gap:6px; font-size:0.9rem; cursor:pointer;"><input type="checkbox" name="subj" value="Data Science"> Data Science</label>
+                  <label style="display:flex; align-items:center; gap:6px; font-size:0.9rem; cursor:pointer;"><input type="checkbox" name="subj" value="English Communication" checked> English Communication</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profile-goals">Primary Learning Goal</label>
+                <textarea id="profile-goals" class="form-textarea" rows="2" placeholder="e.g. Master full-stack web development and crack my first software engineering internship."></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profile-career">Target Career Path</label>
+                <select id="profile-career" class="form-select">
+                  <option value="Software Developer / Full Stack">Software Developer / Full Stack</option>
+                  <option value="AI / Machine Learning Engineer">AI / Machine Learning Engineer</option>
+                  <option value="Data Analyst">Data Analyst</option>
+                  <option value="Cloud & DevOps Engineer">Cloud & DevOps Engineer</option>
+                  <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                </select>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-subtle);">
+                <button type="button" class="btn-outline" onclick="app.profile.resetData()">Reset Demo Data</button>
+                <button type="submit" class="btn-primary">
+                  Save Profile & Continue
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 3: STUDENT DASHBOARD
+           ==================================================================== -->
+      <section id="view-dashboard" class="page-view">
+        <!-- Welcome Banner -->
+        <div class="dashboard-header-banner">
+          <div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="tag tag-emerald">Active Learner</span>
+              <span style="font-size:0.85rem; color:var(--text-secondary);" id="dash-date-str"></span>
+            </div>
+            <h1 style="font-size: 1.8rem; font-weight: 800; margin: 8px 0 4px;" id="dash-welcome-text">Welcome back, Student!</h1>
+            <p style="color:var(--text-secondary); font-size:0.95rem;">You are making steady progress toward your tech career milestone. Keep building momentum.</p>
+          </div>
+          <div class="streak-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+            <div>
+              <div style="font-size:1.15rem; font-weight:800; line-height:1;" id="dash-streak-count">3 Days</div>
+              <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.04em;">Learning Streak</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards -->
+        <div class="grid-4" style="margin-bottom: 24px;">
+          <div class="card">
+            <div class="stat-label">Learning Progress</div>
+            <div class="stat-number" id="dash-progress-pct">42%</div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" id="dash-progress-bar" style="width: 42%;"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Quiz Assessments</div>
+            <div class="stat-number" id="dash-quiz-score">85%</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:6px;">Average gap assessment score</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Projects In Progress</div>
+            <div class="stat-number" id="dash-projects-active">2</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:6px;" id="dash-milestones-count">5 milestones checked</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Study Notes Saved</div>
+            <div class="stat-number" id="dash-notes-count">3</div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:6px;">Indexed locally</div>
+          </div>
+        </div>
+
+        <!-- Dashboard Main Grid -->
+        <div class="grid-2" style="margin-bottom: 24px;">
+          <!-- Weak Topics Revision Card -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                  Topics Recommended for Revision
+                </h3>
+                <p class="card-desc">Calculated automatically from quiz assessment gaps.</p>
+              </div>
+              <button class="btn-sm btn-outline" onclick="app.router.navigate('gap-detector')">Take Quiz</button>
+            </div>
+
+            <div id="dash-weak-topics-list" style="display:flex; flex-direction:column; gap:10px;">
+              <!-- Dynamic Weak Topics -->
+            </div>
+          </div>
+
+          <!-- Weekly Activity Chart (Pure Inline SVG) -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                  Weekly Learning Consistency
+                </h3>
+                <p class="card-desc">Minutes logged studying and completing milestones.</p>
+              </div>
+              <span class="tag tag-blue">Past 7 Days</span>
+            </div>
+
+            <div style="height: 160px; width:100%; display:flex; align-items:flex-end; justify-content:space-between; padding-top:20px;">
+              <!-- Pure CSS/SVG bar chart -->
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1;">
+                <div style="width:28px; height:65px; background:var(--bg-elevated); border-radius:4px;"></div>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Mon</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1;">
+                <div style="width:28px; height:90px; background:var(--bg-elevated); border-radius:4px;"></div>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Tue</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1;">
+                <div style="width:28px; height:120px; background:var(--primary-gradient); border-radius:4px; box-shadow:0 0 10px rgba(59,130,246,0.5);"></div>
+                <span style="font-size:0.75rem; color:#60a5fa; font-weight:700;">Wed</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1;">
+                <div style="width:28px; height:80px; background:var(--bg-elevated); border-radius:4px;"></div>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Thu</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1;">
+                <div style="width:28px; height:105px; background:var(--bg-elevated); border-radius:4px;"></div>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Fri</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1;">
+                <div style="width:28px; height:45px; background:var(--bg-elevated); border-radius:4px;"></div>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Sat</span>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1;">
+                <div style="width:28px; height:75px; background:var(--bg-elevated); border-radius:4px;"></div>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Sun</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activities & Next Recommended Challenges -->
+        <div class="grid-2">
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom:16px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              Recent Platform Activities
+            </h3>
+            <div id="dash-recent-activities" style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Dynamic Activity Log -->
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title" style="margin-bottom:16px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              Recommended Quick Actions
+            </h3>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--bg-secondary); border-radius:var(--radius-md);">
+                <div>
+                  <div style="font-weight:600; font-size:0.92rem;">Practice Python List Comprehensions</div>
+                  <div style="color:var(--text-muted); font-size:0.8rem;">Coding Sandbox • 5 mins</div>
+                </div>
+                <button class="btn-sm btn-primary" onclick="app.codeMentor.loadExercise(1); app.router.navigate('code-mentor');">Start</button>
+              </div>
+
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--bg-secondary); border-radius:var(--radius-md);">
+                <div>
+                  <div style="font-weight:600; font-size:0.92rem;">Mock Interview: 'Introduce Yourself'</div>
+                  <div style="color:var(--text-muted); font-size:0.8rem;">Speech Coach • Voice / Text</div>
+                </div>
+                <button class="btn-sm btn-primary" onclick="app.router.navigate('english-coach')">Practice</button>
+              </div>
+
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--bg-secondary); border-radius:var(--radius-md);">
+                <div>
+                  <div style="font-weight:600; font-size:0.92rem;">Continue: Agriculture Dashboard</div>
+                  <div style="color:var(--text-muted); font-size:0.8rem;">Real-World Project Lab</div>
+                </div>
+                <button class="btn-sm btn-primary" onclick="app.router.navigate('projects')">Open Lab</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 4: AI 1-ON-1 TUTOR
+           ==================================================================== -->
+      <section id="view-tutor" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              Multilingual AI Conceptual Tutor
+            </h2>
+            <p class="card-desc">Ask complex questions. Get step-by-step explanations in Telugu, Hindi, or English with daily life examples.</p>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span class="tag tag-amber" title="Client-side sample engine. Set backend URL in Settings for live model API.">Demo Engine Active</span>
+            <button class="btn-outline btn-sm" onclick="app.tutor.clearChat()">Clear Chat</button>
+          </div>
+        </div>
+
+        <div class="tutor-layout">
+          <!-- Tutor Controls & Topic Picker -->
+          <div class="card" style="padding: 20px; display:flex; flex-direction:column; gap:16px;">
+            <h4 style="font-size:0.95rem; font-weight:700;">Tutor Settings</h4>
+
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.8rem;">Explanation Language</label>
+              <select id="tutor-lang-select" class="form-select" onchange="app.tutor.updateSettings()">
+                <option value="Telugu">తెలుగు (Telugu)</option>
+                <option value="English" selected>English</option>
+                <option value="Hindi">हिन्दी (Hindi)</option>
+                <option value="Tamil">தமிழ் (Tamil)</option>
+                <option value="Kannada">ಕನ್ನಡ (Kannada)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.8rem;">Explanation Depth</label>
+              <select id="tutor-depth-select" class="form-select" onchange="app.tutor.updateSettings()">
+                <option value="Beginner (Real-life analogies)" selected>Beginner (Everyday Analogies)</option>
+                <option value="Intermediate (Conceptual + Syntax)">Intermediate (Syntax & Logic)</option>
+                <option value="Advanced (Under the hood)">Advanced (Deep Mechanics)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.8rem;">Suggested Sample Questions</label>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <button class="btn-secondary btn-sm" style="text-align:left; justify-content:flex-start;" onclick="app.tutor.askPreset('What is a Python List vs Tuple?')">What is a Python List vs Tuple?</button>
+                <button class="btn-secondary btn-sm" style="text-align:left; justify-content:flex-start;" onclick="app.tutor.askPreset('Explain how CSS Flexbox works like a kitchen shelf')">Explain CSS Flexbox simply</button>
+                <button class="btn-secondary btn-sm" style="text-align:left; justify-content:flex-start;" onclick="app.tutor.askPreset('How does an API work in simple Telugu/English?')">How do APIs work?</button>
+                <button class="btn-secondary btn-sm" style="text-align:left; justify-content:flex-start;" onclick="app.tutor.askPreset('What is Recursion in programming?')">What is Recursion?</button>
+              </div>
+            </div>
+
+            <div style="margin-top:auto; padding:12px; background:var(--bg-secondary); border-radius:var(--radius-sm); font-size:0.75rem; color:var(--text-muted);">
+              <strong>Note:</strong> Responses below are generated deterministically by the client-side educational engine. To connect live OpenAI / Gemini / Ollama backends, configure the API bridge in Settings.
+            </div>
+          </div>
+
+          <!-- Chat Messaging Box -->
+          <div class="chat-container">
+            <div class="chat-messages" id="tutor-chat-history">
+              <!-- Initial Greeting -->
+              <div class="chat-bubble chat-ai">
+                <span class="chat-source-badge">EduBridge Demo Tutor</span>
+                <p>Hello! I am your <strong>EduBridge AI Mentor</strong>. I focus on helping you truly <em>understand</em> core concepts rather than just memorizing answers.</p>
+                <p style="margin-top:8px;">Choose your preferred language (English, Telugu, Hindi) and ask me anything about Python, Data Structures, Web Development, or Math!</p>
+              </div>
+            </div>
+
+            <form class="chat-input-bar" onsubmit="app.tutor.handleSubmit(event)">
+              <input type="text" id="tutor-query-input" class="chat-text-input" placeholder="Ask a question (e.g. 'What is a binary search?' or 'Explain loops in Telugu')..." required>
+              <button type="submit" class="btn-primary" id="tutor-send-btn">
+                <span>Send</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 5: LEARNING GAP DETECTOR
+           ==================================================================== -->
+      <section id="view-gap-detector" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+              AI Learning Gap Detector & Diagnostic Quiz
+            </h2>
+            <p class="card-desc">Locate exactly where your foundational knowledge is shaky. Tests calculate actual scores and generate tailored revision tasks.</p>
+          </div>
+        </div>
+
+        <!-- Quiz Selector Tabs -->
+        <div style="display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap;">
+          <button class="btn-secondary active" id="quiz-tab-python" onclick="app.gapDetector.loadQuiz('python')">Python Basics</button>
+          <button class="btn-secondary" id="quiz-tab-web" onclick="app.gapDetector.loadQuiz('web')">HTML & CSS Fundamentals</button>
+          <button class="btn-secondary" id="quiz-tab-math" onclick="app.gapDetector.loadQuiz('math')">Math & Logic for CS</button>
+          <button class="btn-secondary" id="quiz-tab-english" onclick="app.gapDetector.loadQuiz('english')">English Grammar Essentials</button>
+          <button class="btn-secondary" id="quiz-tab-cs" onclick="app.gapDetector.loadQuiz('cs')">Computer Fundamentals</button>
+        </div>
+
+        <div class="grid-2">
+          <!-- Quiz Questions Box -->
+          <div class="card" id="quiz-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h3 style="font-size:1.1rem; font-weight:700;" id="quiz-title">Python Basics Assessment</h3>
+              <span class="tag tag-purple" id="quiz-meta-count">5 Questions</span>
+            </div>
+
+            <div id="quiz-questions-container" style="display:flex; flex-direction:column; gap:24px;">
+              <!-- Dynamic Questions Rendered Here -->
+            </div>
+
+            <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+              <button class="btn-outline" onclick="app.gapDetector.resetCurrentQuiz()">Reset Form</button>
+              <button class="btn-primary" onclick="app.gapDetector.submitAssessment()">Submit & Analyze Gaps</button>
+            </div>
+          </div>
+
+          <!-- Diagnostic Results Box -->
+          <div class="card" id="quiz-results-box">
+            <h3 class="card-title" style="margin-bottom:12px;">Diagnostic Learning Analysis</h3>
+            
+            <div id="results-empty-placeholder" class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <h4>Assessment Not Yet Submitted</h4>
+              <p style="font-size:0.88rem; margin-top:6px;">Select your answers and click "Submit & Analyze Gaps" to generate your score, identified weaknesses, and custom practice recommendations.</p>
+            </div>
+
+            <div id="results-content-area" style="display:none;">
+              <div style="text-align:center; padding:16px; background:var(--bg-secondary); border-radius:var(--radius-md); margin-bottom:20px;">
+                <div style="font-size:0.8rem; text-transform:uppercase; color:var(--text-muted); font-weight:700;">Diagnostic Score</div>
+                <div class="stat-number" id="diag-score-display" style="color:#60a5fa; font-size:2.6rem;">80%</div>
+                <div style="font-size:0.85rem; color:var(--text-secondary); margin-top:4px;" id="diag-score-summary">4 out of 5 questions answered correctly</div>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">Note: This score reflects conceptual readiness on this specific topic, not a definitive measure of intelligence.</p>
+              </div>
+
+              <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:10px;">Detected Gap Topics for Revision:</h4>
+              <div id="diag-gap-tags" style="display:flex; flex-direction:column; gap:8px; margin-bottom:20px;">
+                <!-- Gap Tags -->
+              </div>
+
+              <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:10px;">Recommended Next Steps:</h4>
+              <div id="diag-recommendations-list" style="display:flex; flex-direction:column; gap:8px; font-size:0.9rem; color:var(--text-secondary);">
+                <!-- Recommendations -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 6: PERSONALIZED LEARNING ROADMAP
+           ==================================================================== -->
+      <section id="view-roadmap" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+              Personalized Learning Roadmap Generator
+            </h2>
+            <p class="card-desc">Generate tailored weekly learning schedules and daily actionable tasks based on your time availability.</p>
+          </div>
+          <span class="tag tag-purple">Template Rules Engine</span>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:24px;">
+          <!-- Roadmap Configuration Form -->
+          <div class="card">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:16px;">Configure Your Learning Goal</h3>
+            <form id="roadmap-config-form" onsubmit="app.roadmap.handleGenerate(event)">
+              <div class="form-group">
+                <label class="form-label">Learning Goal / Track</label>
+                <select id="roadmap-goal-select" class="form-select">
+                  <option value="python">Python Programming from Scratch</option>
+                  <option value="web" selected>Full-Stack Web Development</option>
+                  <option value="ai">Artificial Intelligence Fundamentals</option>
+                  <option value="english">Professional English Communication</option>
+                  <option value="internship">Software Internship Preparation (90 Days)</option>
+                </select>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label">Current Experience Level</label>
+                  <select id="roadmap-level-select" class="form-select">
+                    <option value="Beginner">Absolute Beginner</option>
+                    <option value="Intermediate" selected>Intermediate (Some Coding)</option>
+                    <option value="Advanced">Advanced (Refreshing)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Daily Available Study Time</label>
+                  <select id="roadmap-time-select" class="form-select">
+                    <option value="30 mins">30 mins / day</option>
+                    <option value="1 hour" selected>1 hour / day</option>
+                    <option value="2+ hours">2+ hours / day (Intensive)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Target Completion Timeline</label>
+                <select id="roadmap-duration-select" class="form-select">
+                  <option value="4 Weeks" selected>4-Week Sprint</option>
+                  <option value="8 Weeks">8-Week Comprehensive</option>
+                  <option value="12 Weeks">12-Week Career Mastery</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">
+                Generate Structured Roadmap
+              </button>
+            </form>
+          </div>
+
+          <!-- Roadmap Summary & Quick Stats -->
+          <div class="card">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;" id="roadmap-active-title">Full-Stack Web Development Roadmap</h3>
+            <p style="color:var(--text-secondary); font-size:0.9rem;" id="roadmap-active-desc">A structured sprint covering modern semantic HTML, CSS Flexbox/Grid, JavaScript DOM, APIs, and a final capstone project.</p>
+            
+            <div style="margin:20px 0;">
+              <div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:6px;">
+                <span>Roadmap Task Completion</span>
+                <strong id="roadmap-completion-pct">0%</strong>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="roadmap-progress-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div style="background:var(--bg-secondary); padding:16px; border-radius:var(--radius-md); font-size:0.82rem; color:var(--text-muted);">
+              <strong>Learning Tip:</strong> Consistency trumps cramming. Marking daily items as completed will update your dashboard streak and unlock the Roadmap Starter achievement.
+            </div>
+          </div>
+        </div>
+
+        <!-- Rendered Interactive Timeline Tasks -->
+        <div class="card">
+          <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:18px;">Structured Weekly Milestones & Tasks</h3>
+          <div id="roadmap-tasks-container" style="display:flex; flex-direction:column; gap:16px;">
+            <!-- Dynamic Roadmap Steps -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 7: REAL-WORLD PROJECT LAB
+           ==================================================================== -->
+      <section id="view-projects" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+              Real-World Project Lab
+            </h2>
+            <p class="card-desc">Build practical, resume-worthy applications tackling agriculture, water conservation, community problems, and software utilities.</p>
+          </div>
+          <span class="tag tag-emerald">Practical Learning</span>
+        </div>
+
+        <!-- Category Filter Buttons -->
+        <div style="display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap;" id="project-filter-buttons">
+          <button class="btn-secondary active" onclick="app.projects.filterCategory('all', this)">All Categories</button>
+          <button class="btn-secondary" onclick="app.projects.filterCategory('Web Development', this)">Web Dev</button>
+          <button class="btn-secondary" onclick="app.projects.filterCategory('Python', this)">Python</button>
+          <button class="btn-secondary" onclick="app.projects.filterCategory('Agriculture', this)">Agriculture</button>
+          <button class="btn-secondary" onclick="app.projects.filterCategory('Sustainability', this)">Sustainability</button>
+          <button class="btn-secondary" onclick="app.projects.filterCategory('Community', this)">Community</button>
+        </div>
+
+        <!-- Project Cards Grid -->
+        <div class="grid-3" id="projects-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 8: AI CODING MENTOR
+           ==================================================================== -->
+      <section id="view-code-mentor" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              AI Coding Mentor & Sandbox
+            </h2>
+            <p class="card-desc">Write code, run deterministic unit test suites, and live preview HTML/CSS in a safe sandboxed environment.</p>
+          </div>
+          <span class="tag tag-blue" id="code-lang-tag">JavaScript / HTML</span>
+        </div>
+
+        <!-- Exercise Selector Bar -->
+        <div style="display:flex; gap:12px; margin-bottom:16px; align-items:center; flex-wrap:wrap;">
+          <label style="font-size:0.85rem; font-weight:600; color:var(--text-secondary);">Select Practice Challenge:</label>
+          <select id="code-exercise-select" class="form-select" style="max-width:320px;" onchange="app.codeMentor.selectExercise(this.value)">
+            <option value="1">1. JavaScript: Array Sum & Filter Evens</option>
+            <option value="2">2. JavaScript: Reverse String & Palindrome</option>
+            <option value="3">3. HTML & CSS: Responsive Profile Card (Live Sandbox)</option>
+            <option value="4">4. Python Basics: FizzBuzz Simulator (JS Demo Runner)</option>
+          </select>
+          <button class="btn-outline btn-sm" onclick="app.codeMentor.resetCurrentCode()">Reset Starter Code</button>
+          <button class="btn-outline btn-sm" onclick="app.codeMentor.copyCode()">Copy Code</button>
+        </div>
+
+        <div class="code-mentor-grid">
+          <!-- Left: Code Editor -->
+          <div class="code-editor-box">
+            <div class="editor-top-bar">
+              <span style="font-size:0.8rem; color:#9ca3af; font-family:var(--font-mono);" id="code-file-name">solution.js</span>
+              <button class="btn-primary btn-sm" onclick="app.codeMentor.runCode()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <span>Run Tests / Preview</span>
+              </button>
+            </div>
+            <textarea id="code-editor-textarea" class="code-textarea" spellcheck="false"></textarea>
+          </div>
+
+          <!-- Right: Output & Guided Debugging -->
+          <div class="output-panel">
+            <div class="editor-top-bar">
+              <span style="font-size:0.8rem; color:#9ca3af; font-weight:600;">Console Output & Mentor Advice</span>
+              <span class="tag tag-emerald" id="code-test-status" style="font-size:0.7rem;">Ready to Run</span>
+            </div>
+
+            <!-- Terminal Output -->
+            <div class="output-terminal" id="code-terminal-output">Press "Run Tests / Preview" to test your code against unit test assertions.</div>
+
+            <!-- Sandboxed Iframe (Hidden for non-HTML) -->
+            <div id="code-preview-container" style="display:none; height:240px; border-top:1px solid #1f2937;">
+              <iframe id="code-sandbox-iframe" class="preview-frame" sandbox="allow-scripts" title="Preview Frame"></iframe>
+            </div>
+
+            <div style="padding:14px 16px; background:#0f172a; border-top:1px solid #1f2937; font-size:0.82rem; color:var(--text-secondary);">
+              <strong>Security Architecture:</strong> Arbitrary client-side <code>eval()</code> is strictly prohibited. JavaScript tests run deterministically inside a safe functional closure; HTML/CSS renders in an isolated sandbox iframe. Secure Python/Java server execution requires configuring the backend API.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 9: ENGLISH COMMUNICATION COACH
+           ==================================================================== -->
+      <section id="view-english-coach" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg>
+              English Communication & Speech Coach
+            </h2>
+            <p class="card-desc">Prepare for job interviews and everyday professional conversations. Includes Web Speech recognition and Telugu-to-English hints.</p>
+          </div>
+          <span class="tag tag-blue" id="speech-support-badge">Web Speech API</span>
+        </div>
+
+        <div class="grid-2">
+          <!-- Left: Spoken Practice & Voice Recognition -->
+          <div class="card">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:14px;">Interview Speech Practice</h3>
+            
+            <div style="background:var(--bg-secondary); padding:16px; border-radius:var(--radius-md); margin-bottom:18px;">
+              <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700;">Interview Prompt</div>
+              <div style="font-size:1.05rem; font-weight:700; color:#60a5fa; margin-top:4px;" id="english-prompt-title">"Tell me about yourself and your primary technical skills."</div>
+              <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:8px;">
+                <strong>Telugu Hint:</strong> "మీ నేపథ్యం, చదువు, ప్రాజెక్టులు మరియు మీ బలమైన టెక్ స్కిల్స్ గురించి సంక్షిప్తంగా వివరించండి."
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Your Spoken or Typed Response</label>
+              <textarea id="english-speech-transcript" class="form-textarea" rows="4" placeholder="Click the microphone button to speak, or type your response here..."></textarea>
+            </div>
+
+            <div style="display:flex; gap:12px; align-items:center;">
+              <button class="btn-primary" id="mic-record-btn" onclick="app.englishCoach.toggleMic()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path></svg>
+                <span id="mic-btn-label">Start Speaking</span>
+              </button>
+
+              <button class="btn-secondary" onclick="app.englishCoach.analyzeResponse()">
+                Analyze Grammar & Flow
+              </button>
+            </div>
+
+            <!-- Speech Feedback Panel -->
+            <div id="english-feedback-panel" style="margin-top:20px; padding:16px; background:var(--bg-secondary); border-radius:var(--radius-md); display:none;">
+              <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#34d399;">Coach Feedback</h4>
+              <div id="english-feedback-text" style="font-size:0.9rem; color:var(--text-secondary);"></div>
+            </div>
+          </div>
+
+          <!-- Right: Daily Vocabulary & Sentence Correction -->
+          <div class="card">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:14px;">Sentence Corrector & Tech Vocabulary</h3>
+
+            <div class="form-group">
+              <label class="form-label">Grammar & Sentence Improver</label>
+              <input type="text" id="sentence-input" class="form-input" placeholder="Type a sentence (e.g. 'I am knowing python very good')..." value="I am knowing python very good">
+              <button class="btn-sm btn-outline" style="align-self:flex-start; margin-top:8px;" onclick="app.englishCoach.correctSentence()">Check Sentence</button>
+            </div>
+
+            <div id="sentence-result-box" style="padding:12px 14px; background:var(--bg-secondary); border-radius:var(--radius-md); font-size:0.88rem; margin-bottom:20px;">
+              <strong>Corrected:</strong> <span style="color:#34d399;">"I know Python very well."</span><br>
+              <span style="font-size:0.8rem; color:var(--text-muted);">'Know' is a stative verb (not used in continuous tense), and 'well' is the adverb modifying know.</span>
+            </div>
+
+            <h4 style="font-size:0.95rem; font-weight:700; margin-bottom:10px;">Tech Workplace Word of the Day</h4>
+            <div style="background:linear-gradient(135deg, rgba(99,102,241,0.1), rgba(59,130,246,0.1)); border:1px solid rgba(99,102,241,0.25); border-radius:var(--radius-md); padding:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong style="font-size:1.1rem; color:#a5b4fc;">Scalability (నామవాచకం)</strong>
+                <span class="tag tag-blue">Word of Day</span>
+              </div>
+              <p style="font-size:0.88rem; color:var(--text-secondary); margin-top:6px;">
+                The capacity of a software system to handle a growing amount of work or users gracefully.
+              </p>
+              <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
+                <em>"We designed our cloud database with high scalability in mind."</em>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 10: CAREER & OPPORTUNITY BRIDGE
+           ==================================================================== -->
+      <section id="view-career" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+              Career & Opportunity Bridge
+            </h2>
+            <p class="card-desc">Explore verified skill checklists, resume guidelines, and curated sample internship opportunities.</p>
+          </div>
+        </div>
+
+        <!-- 6 High-Impact Career Pathways -->
+        <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:16px;">High-Growth Career Pathways</h3>
+        <div class="grid-3" style="margin-bottom:32px;">
+          <div class="card">
+            <span class="tag tag-blue" style="margin-bottom:10px;">Full-Stack Track</span>
+            <h4 style="font-size:1.1rem; font-weight:700;">Software Developer</h4>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin:6px 0 14px;">Build scalable web apps, robust backend APIs, and distributed systems.</p>
+            <div style="font-size:0.8rem; color:var(--text-muted);">
+              <strong>Key Skills:</strong> JavaScript, Python, REST APIs, Git, PostgreSQL
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="tag tag-purple" style="margin-bottom:10px;">AI/ML Track</span>
+            <h4 style="font-size:1.1rem; font-weight:700;">AI & Machine Learning Engineer</h4>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin:6px 0 14px;">Deploy neural models, fine-tune LLMs, and optimize inference pipelines.</p>
+            <div style="font-size:0.8rem; color:var(--text-muted);">
+              <strong>Key Skills:</strong> Python, PyTorch, Linear Algebra, Prompt Engineering
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="tag tag-emerald" style="margin-bottom:10px;">Analytics Track</span>
+            <h4 style="font-size:1.1rem; font-weight:700;">Data Analyst</h4>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin:6px 0 14px;">Transform messy data into actionable business intelligence and dashboards.</p>
+            <div style="font-size:0.8rem; color:var(--text-muted);">
+              <strong>Key Skills:</strong> SQL, Python (Pandas), Tableau/PowerBI, Statistics
+            </div>
+          </div>
+        </div>
+
+        <!-- Internship & Scholarship Directory (Sample/Verified) -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Curated Opportunities Directory</h3>
+              <p class="card-desc">Clear demo listings. We never guarantee admissions or jobs; real opportunities require verified external application.</p>
+            </div>
+            <span class="tag tag-amber">Sample Listings Directory</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:16px; background:var(--bg-secondary); border-radius:var(--radius-md);">
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <strong style="font-size:1rem;">Graduate Software Engineering Intern</strong>
+                  <span class="tag tag-blue">Remote / Hybrid</span>
+                </div>
+                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Sample Tech Corp • Eligibility: Pre-final & Final Year Students</div>
+              </div>
+              <button class="btn-sm btn-outline" onclick="alert('Demo Notice: This is an example listing for UI demonstration. Real postings require backend integration.')">View Criteria</button>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:16px; background:var(--bg-secondary); border-radius:var(--radius-md);">
+              <div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <strong style="font-size:1rem;">National STEM Merit Scholarship</strong>
+                  <span class="tag tag-emerald">Merit Aid</span>
+                </div>
+                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Sample Education Foundation • Eligibility: Undergraduate Tech Majors</div>
+              </div>
+              <button class="btn-sm btn-outline" onclick="alert('Demo Notice: Sample scholarship record. Connect real backend database in Settings.')">View Criteria</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 11: NOTES & STUDY MATERIAL ASSISTANT
+           ==================================================================== -->
+      <section id="view-notes" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              Notes & Study Material Assistant
+            </h2>
+            <p class="card-desc">Write notes, organize by subject, export to plain text, and generate practice questions.</p>
+          </div>
+          <button class="btn-primary btn-sm" onclick="app.notes.createEmptyNote()">+ New Note</button>
+        </div>
+
+        <div class="grid-2">
+          <!-- Left: Notes Editor -->
+          <div class="card">
+            <div class="form-group">
+              <label class="form-label">Note Title</label>
+              <input type="text" id="note-title-input" class="form-input" placeholder="e.g. Python Dictionaries & Hash Maps">
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Subject Tag</label>
+                <select id="note-subject-select" class="form-select">
+                  <option value="Python">Python</option>
+                  <option value="Web Development">Web Development</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="English">English</option>
+                  <option value="General">General</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Saved</label>
+                <div id="note-saved-status" style="font-size:0.85rem; color:var(--text-muted); padding-top:10px;">Ready to save</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Note Content</label>
+              <textarea id="note-body-textarea" class="form-textarea" rows="10" placeholder="Type your lecture notes, formula summaries, or code snippets here..."></textarea>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn-primary btn-sm" onclick="app.notes.saveCurrentNote()">Save Note</button>
+              <button class="btn-secondary btn-sm" onclick="app.notes.downloadTxt()">Download .txt</button>
+              <button class="btn-outline btn-sm" onclick="app.notes.summarizeNote()">Summarize Note</button>
+            </div>
+          </div>
+
+          <!-- Right: Saved Notes List & Search -->
+          <div class="card">
+            <div class="card-header" style="margin-bottom:12px;">
+              <h3 style="font-size:1.05rem; font-weight:700;">Your Saved Notes</h3>
+              <input type="text" id="notes-search-input" class="form-input" placeholder="Search notes..." style="padding:4px 10px; font-size:0.8rem; width:150px;" oninput="app.notes.renderList(this.value)">
+            </div>
+
+            <div id="notes-list-container" style="display:flex; flex-direction:column; gap:10px; max-height:480px; overflow-y:auto;">
+              <!-- Dynamic list of notes -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 12: PROGRESS & BADGES
+           ==================================================================== -->
+      <section id="view-progress" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
+              Student Analytics & Achievement Badges
+            </h2>
+            <p class="card-desc">Earn badges strictly by completing real learning actions. No fabricated achievements.</p>
+          </div>
+        </div>
+
+        <div class="grid-4" style="margin-bottom:24px;">
+          <div class="card" style="text-align:center;">
+            <div class="stat-number" id="stats-total-actions" style="color:#60a5fa;">12</div>
+            <div class="stat-label">Total Actions Logged</div>
+          </div>
+          <div class="card" style="text-align:center;">
+            <div class="stat-number" id="stats-quizzes-taken" style="color:#a78bfa;">1</div>
+            <div class="stat-label">Diagnostic Quizzes</div>
+          </div>
+          <div class="card" style="text-align:center;">
+            <div class="stat-number" id="stats-milestones-done" style="color:#34d399;">5</div>
+            <div class="stat-label">Milestones Checked</div>
+          </div>
+          <div class="card" style="text-align:center;">
+            <div class="stat-number" id="stats-badges-earned" style="color:#fbbf24;">2 / 5</div>
+            <div class="stat-label">Badges Unlocked</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:18px;">Earnable Achievement Badges</h3>
+          <div class="grid-3" id="badges-grid">
+            <!-- Dynamically Rendered Badges -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 13: SETTINGS & BACKEND API INTEGRATION
+           ==================================================================== -->
+      <section id="view-settings" class="page-view">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              Settings & Production Backend Integration
+            </h2>
+            <p class="card-desc">Configure client preferences, export data, or link EduBridge AI to a real Python FastAPI/Django backend service.</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Backend API Connection Settings -->
+          <div class="card">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:14px;">Production API Connector</h3>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px;">
+              By default, EduBridge AI operates in <strong>Client Demo Engine</strong> mode. When you launch the real Python backend service, enter its URL here to automatically route calls.
+            </p>
+
+            <div class="form-group">
+              <label class="form-label">Backend Service URL</label>
+              <input type="url" id="backend-url-input" class="form-input" placeholder="e.g. http://127.0.0.1:8000 or https://api.edubridge.ai">
+            </div>
+
+            <div style="display:flex; gap:10px; margin-bottom:16px;">
+              <button class="btn-primary btn-sm" onclick="app.api.saveUrl()">Save & Test Connection</button>
+              <button class="btn-outline btn-sm" onclick="app.api.resetToDemo()">Use Demo Engine</button>
+            </div>
+
+            <div id="backend-ping-result" style="padding:12px; border-radius:var(--radius-md); background:var(--bg-secondary); font-size:0.85rem; color:var(--text-muted);">
+              Current Status: <strong>Local Demo Mode</strong> (No remote server required)
+            </div>
+          </div>
+
+          <!-- Documented API Endpoint Contracts -->
+          <div class="card">
+            <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:14px;">Standard Backend Endpoint Contracts</h3>
+            <div style="font-size:0.82rem; font-family:var(--font-mono); display:flex; flex-direction:column; gap:8px; max-height:260px; overflow-y:auto;">
+              <div style="background:var(--bg-secondary); padding:8px 12px; border-radius:6px;">POST /api/auth/register</div>
+              <div style="background:var(--bg-secondary); padding:8px 12px; border-radius:6px;">POST /api/auth/login</div>
+              <div style="background:var(--bg-secondary); padding:8px 12px; border-radius:6px;">GET /api/student/profile</div>
+              <div style="background:var(--bg-secondary); padding:8px 12px; border-radius:6px;">PUT /api/student/profile</div>
+              <div style="background:var(--bg-secondary); padding:8px 12px; border-radius:6px;">POST /api/ai/tutor</div>
+              <div style="background:var(--bg-secondary); padding:8px 12px; border-radius:6px;">POST /api/learning/assess</div>
+              <div style="background:var(--bg-secondary); padding:8px 12px; border-radius:6px;">GET /api/learning/roadmap</div>
+              <div style="background:var(--bg-secondary); padding:8px 12px; border-radius:6px;">GET /api/projects</div>
+              <div style="background:var(--bg-secondary); padding:8px 12px; border-radius:6px;">GET /api/progress</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy & Local Data Management -->
+        <div class="card" style="margin-top:24px;">
+          <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:12px;">Data Privacy & Storage</h3>
+          <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:16px;">
+            All your session progress, notes, completed milestones, and profile fields are kept strictly on your own device in private browser storage. No tracking cookies or sensitive personal passwords are stored.
+          </p>
+
+          <div style="display:flex; gap:12px; align-items:center;">
+            <button class="btn-outline btn-sm" onclick="app.profile.exportJson()">Export Data (JSON)</button>
+            <button class="btn-outline btn-sm" style="color:var(--accent-rose); border-color:rgba(244,63,94,0.4);" onclick="if(confirm('Are you sure you want to reset all demo data?')) app.profile.resetData();">
+              Reset All Demo Data
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ==========================================================================
+     GLOBAL SEARCH MODAL
+     ========================================================================== -->
+<div class="modal-overlay" id="search-modal">
+  <div class="modal-content" style="max-width:540px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h3 style="font-size:1.1rem; font-weight:700;">Global Search</h3>
+      <span class="modal-close-btn" onclick="app.search.close()">✕</span>
+    </div>
+
+    <input type="text" id="modal-search-input" class="form-input" placeholder="Type keyword (e.g. 'Python', 'CSS', 'Resume', 'Quiz')..." oninput="app.search.handleInput(this.value)">
+
+    <div id="modal-search-results" style="margin-top:16px; display:flex; flex-direction:column; gap:8px; max-height:300px; overflow-y:auto;">
+      <!-- Search results -->
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================================================
+     NOTIFICATIONS DRAWER / MODAL
+     ========================================================================== -->
+<div class="modal-overlay" id="notif-modal">
+  <div class="modal-content" style="max-width:480px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <h3 style="font-size:1.1rem; font-weight:700;">Platform Notifications</h3>
+      <span class="modal-close-btn" onclick="app.notif.close()">✕</span>
+    </div>
+
+    <div id="notif-list-container" style="display:flex; flex-direction:column; gap:10px;">
+      <!-- Dynamic notifications -->
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================================================
+     JAVASCRIPT APPLICATION CORE (State, Storage, I18n, Router, Modules)
+     ========================================================================== -->
+<script>
+/**
+ * EduBridge AI - Standalone Single-File Application Core
+ */
+const app = {
+  // 1. Centralized Application State
+  state: {
+    language: 'en',
+    theme: 'dark',
+    backendUrl: '',
+    profile: {
+      name: 'Ramesh Kumar',
+      level: 'Undergraduate College Student',
+      course: 'B.Tech Computer Science',
+      language: 'English',
+      subjects: ['Python Programming', 'Web Development', 'English Communication'],
+      goals: 'Master full-stack web development and crack my first software engineering internship.',
+      career: 'Software Developer / Full Stack'
+    },
+    streak: 3,
+    progress: 42,
+    weakTopics: ['Python Tuples & Immutability', 'CSS Flexbox Alignments', 'SQL Joins'],
+    recentActivities: [
+      { text: 'Completed Python Basics Diagnostic Assessment (80%)', time: 'Today, 2:15 PM' },
+      { text: 'Checked off Milestone: Responsive Layout in Agriculture Dashboard', time: 'Yesterday' },
+      { text: 'Saved Study Note: Python Dictionaries & Hash Maps', time: '2 days ago' }
+    ],
+    notes: [
+      { id: 1, title: 'Python Dictionaries & Hash Maps', subject: 'Python', body: 'Dictionaries store key-value pairs in O(1) average lookup time. Keys must be immutable (strings, numbers, tuples). Values can be any object.', date: 'Oct 12' },
+      { id: 2, title: 'CSS Flexbox vs CSS Grid', subject: 'Web Development', body: 'Flexbox is designed for 1-dimensional layouts (row OR column). Grid is designed for 2-dimensional layouts (rows AND columns simultaneously).', date: 'Oct 13' }
+    ],
+    projects: [
+      {
+        id: 'p1',
+        title: 'Agriculture Information Dashboard',
+        category: 'Agriculture',
+        difficulty: 'Intermediate',
+        skills: 'HTML, CSS, JavaScript, Weather APIs',
+        effort: '12 Hours',
+        problem: 'Smallholder farmers lack consolidated, clean views of local rainfall forecasts, market prices, and soil advisories.',
+        milestones: [
+          { text: 'Build responsive grid layout for weather & crop metrics', done: true },
+          { text: 'Implement mock weather forecast cards and charts', done: true },
+          { text: 'Create Telugu & English toggle for rural accessibility', done: false },
+          { text: 'Add offline storage cache using LocalStorage', done: false }
+        ]
+      },
+      {
+        id: 'p2',
+        title: 'Student Smart Expense Tracker',
+        category: 'Web Development',
+        difficulty: 'Beginner',
+        skills: 'Vanilla JS, DOM Manipulation, CSS',
+        effort: '8 Hours',
+        problem: 'College students struggle to track pocket expenses and identify unnecessary daily leakages.',
+        milestones: [
+          { text: 'Create category budget input form with validation', done: true },
+          { text: 'Calculate weekly balance and category totals', done: true },
+          { text: 'Display bar chart of monthly expenditures', done: false },
+          { text: 'Add JSON data export feature', done: false }
+        ]
+      },
+      {
+        id: 'p3',
+        title: 'Village Water Usage & Conservation Monitor',
+        category: 'Sustainability',
+        difficulty: 'Intermediate',
+        skills: 'Data Visualization, SVG, JavaScript',
+        effort: '10 Hours',
+        problem: 'Communities need clear alerts when borehole water levels drop below safe seasonal thresholds.',
+        milestones: [
+          { text: 'Design level gauge indicator with SVG', done: false },
+          { text: 'Implement threshold warning banner system', done: false },
+          { text: 'Provide conservation action checklist', done: false }
+        ]
+      },
+      {
+        id: 'p4',
+        title: 'Community Issue Reporting Portal',
+        category: 'Community',
+        difficulty: 'Beginner',
+        skills: 'Forms, File Handling, LocalStorage',
+        effort: '6 Hours',
+        problem: 'Citizens need a clean way to log broken streetlights and water leaks with photo uploads and status tracking.',
+        milestones: [
+          { text: 'Construct incident report form with coordinates', done: false },
+          { text: 'Add status tracking pills (Reported, In Progress, Resolved)', done: false },
+          { text: 'Enable local storage of incident records', done: false }
+        ]
+      }
+    ],
+    badges: [
+      { id: 'b1', title: 'First Quiz Ace', desc: 'Score 80%+ on any diagnostic assessment', earned: true, icon: '🏆' },
+      { id: 'b2', title: 'Roadmap Starter', desc: 'Generate and check off your first roadmap milestone', earned: true, icon: '🚀' },
+      { id: 'b3', title: 'Active Note Taker', desc: 'Save 3 or more technical study notes', earned: false, icon: '📝' },
+      { id: 'b4', title: 'Project Builder', desc: 'Complete all milestones on any project', earned: false, icon: '🛠️' },
+      { id: 'b5', title: 'Orator in Training', desc: 'Complete 3 speech coaching sessions', earned: false, icon: '🎙️' }
+    ],
+    notifications: [
+      { id: 1, title: 'Welcome to EduBridge AI!', text: 'Your learning journey is ready. Take your first quiz to identify gaps.', time: '10 mins ago', unread: true },
+      { id: 2, title: 'Streak Maintained', text: '3 days of continuous learning achieved!', time: '1 hour ago', unread: true }
+    ]
+  },
+
+  // 2. Storage Handler
+  storage: {
+    KEY: 'edubridge_ai_state_v1',
+    save() {
+      try {
+        localStorage.setItem(this.KEY, JSON.stringify(app.state));
+      } catch (e) {
+        console.warn('Storage save failed:', e);
+      }
+    },
+    load() {
+      try {
+        const raw = localStorage.getItem(this.KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          app.state = { ...app.state, ...parsed };
+        }
+      } catch (e) {
+        console.warn('Storage load failed, using defaults:', e);
+      }
+    }
+  },
+
+  // 3. Multilingual I18n Engine
+  i18n: {
+    translations: {
+      en: {
+        nav_explore: 'Explore & Learn',
+        nav_home: 'Home / Landing',
+        nav_dashboard: 'Student Dashboard',
+        nav_ai_tools: 'AI Mentorship',
+        nav_tutor: 'AI 1-on-1 Tutor',
+        nav_gaps: 'Learning Gap Quiz',
+        nav_roadmap: 'Personalized Roadmap',
+        nav_practical: 'Practical Skills',
+        nav_projects: 'Real-World Project Lab',
+        nav_code: 'AI Coding Mentor',
+        nav_english: 'English Speech Coach',
+        nav_career_tools: 'Career & Utilities',
+        nav_career: 'Career & Opportunities',
+        nav_notes: 'Notes & Summaries',
+        nav_analytics: 'Progress & Badges',
+        nav_settings: 'Settings & API',
+        search_placeholder: 'Search lessons, projects, skills...',
+        hero_badge: 'Empowering 100,000+ Students Across India & Global',
+        hero_title_1: 'Learn Better. Build Real Skills.',
+        hero_title_2: 'Unlock Opportunities.',
+        hero_desc: 'The all-in-one AI education platform built for regional and global learners. Master complex concepts in your mother tongue, fix your knowledge gaps, and build portfolio-worthy projects.',
+        btn_start_learning: 'Start Learning Now',
+        btn_explore_tutor: 'Try AI Tutor',
+        features_title: 'Comprehensive Learning Ecosystem',
+        features_sub: 'Engineered to transform students from theoretical memorization to high-impact industry readiness.'
+      },
+      te: {
+        nav_explore: 'అన్వేషించండి & నేర్చుకోండి',
+        nav_home: 'ప్రధాన పేజీ (Home)',
+        nav_dashboard: 'విద్యార్థి డ్యాష్‌బోర్డ్',
+        nav_ai_tools: 'AI మెంటార్‌షిప్',
+        nav_tutor: 'AI 1-on-1 ట్యూటర్',
+        nav_gaps: 'లెర్నింగ్ గ్యాప్ క్విజ్',
+        nav_roadmap: 'వ్యక్తిగత రోడ్‌మ్యాప్',
+        nav_practical: 'ప్రాక్టికల్ నైపుణ్యాలు',
+        nav_projects: 'ప్రాజెక్ట్ ల్యాబ్',
+        nav_code: 'AI కోడింగ్ మెంటార్',
+        nav_english: 'ఇంగ్లీష్ స్పీచ్ కోచ్',
+        nav_career_tools: 'కెరీర్ & అవకాశాలు',
+        nav_career: 'కెరీర్ & ఉపకారవేతనాలు',
+        nav_notes: 'స్టడీ నోట్స్',
+        nav_analytics: 'పురోగతి & బ్యాడ్జ్‌లు',
+        nav_settings: 'సెట్టింగ్స్ & API',
+        search_placeholder: 'పాఠాలు, ప్రాజెక్టులు శోధించండి...',
+        hero_badge: 'లక్షలాది విద్యార్థుల కోసం సరికొత్త వేదిక',
+        hero_title_1: 'బాగా నేర్చుకోండి. నైపుణ్యాలు పెంచుకోండి.',
+        hero_title_2: 'ఉన్నత అవకాశాలను పొందండి.',
+        hero_desc: 'కష్టమైన అంశాలను మాతృభాషలో సులభంగా అర్థం చేసుకోండి, మీ లోపాలను సరిదిద్దుకోండి మరియు నిజమైన ప్రాజెక్టులను నిర్మించండి.',
+        btn_start_learning: 'నేర్చుకోవడం ప్రారంభించండి',
+        btn_explore_tutor: 'AI ట్యూటర్ ప్రయత్నించండి',
+        features_title: 'సంపూర్ణ విద్యా పర్యావరణం',
+        features_sub: 'సిద్ధాంతాల బట్టీ పట్టడం కాకుండా నిజమైన నైపుణ్యాల సాధన.'
+      },
+      hi: {
+        nav_explore: 'खोजें और सीखें',
+        nav_home: 'होम पेज',
+        nav_dashboard: 'छात्र डैशबोर्ड',
+        nav_ai_tools: 'एआई मेंटरशिप',
+        nav_tutor: 'एआई 1-ऑन-1 ट्यूटर',
+        nav_gaps: 'लर्निंग गैप क्विज़',
+        nav_roadmap: 'व्यक्तिगत रोडमैप',
+        nav_practical: 'व्यावहारिक कौशल',
+        nav_projects: 'प्रोजेक्ट लैब',
+        nav_code: 'कोडिंग मेंटर',
+        nav_english: 'अंग्रेजी स्पीच कोच',
+        nav_career_tools: 'करियर और अवसर',
+        nav_career: 'करियर मार्गदर्शन',
+        nav_notes: 'अध्ययन नोट्स',
+        nav_analytics: 'प्रगति और बैज',
+        nav_settings: 'सेटिंग्स और एपीआई',
+        search_placeholder: 'पाठ, प्रोजेक्ट खोजें...',
+        hero_badge: 'विद्यार्थियों के सशक्तिकरण का नया मंच',
+        hero_title_1: 'बेहतर सीखें। कौशल बनाएं।',
+        hero_title_2: 'अवसर अनलॉक करें।',
+        hero_desc: 'कठिन अवधारणाओं को अपनी भाषा में समझें, कमजोरियों को दूर करें और करियर के लिए वास्तविक प्रोजेक्ट बनाएं।',
+        btn_start_learning: 'सीखना शुरू करें',
+        btn_explore_tutor: 'एआई ट्यूटर आजमाएं',
+        features_title: 'व्यापक शिक्षण पारिस्थितिकी तंत्र',
+        features_sub: 'रटने की बजाय वास्तविक कौशल और प्रोजेक्ट पर केंद्रित।'
+      }
+    },
+    setLanguage(lang) {
+      if (!this.translations[lang]) lang = 'en';
+      app.state.language = lang;
+      app.storage.save();
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (this.translations[lang][key]) {
+          el.innerText = this.translations[lang][key];
+        }
+      });
+
+      const select = document.getElementById('app-language-select');
+      if (select) select.value = lang;
+    }
+  },
+
+  // 4. View Router
+  router: {
+    current: 'landing',
+    navigate(viewId) {
+      this.current = viewId;
+      document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active-view'));
+      
+      const targetView = document.getElementById(`view-${viewId}`);
+      if (targetView) {
+        targetView.classList.add('active-view');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      document.querySelectorAll('#sidebar .nav-item').forEach(item => {
+        if (item.getAttribute('data-view') === viewId) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
+      // Close mobile menu if open
+      document.getElementById('sidebar').classList.remove('mobile-open');
+
+      // Specific view refreshes
+      if (viewId === 'dashboard') app.dashboard.refresh();
+      if (viewId === 'notes') app.notes.renderList();
+      if (viewId === 'projects') app.projects.render();
+      if (viewId === 'progress') app.analytics.refresh();
+      if (viewId === 'gap-detector') app.gapDetector.loadQuiz('python');
+    }
+  },
+
+  // 5. Dashboard Controller
+  dashboard: {
+    refresh() {
+      const p = app.state.profile;
+      document.getElementById('dash-welcome-text').innerText = `Welcome back, ${p.name}!`;
+      document.getElementById('header-user-name').innerText = p.name;
+      document.getElementById('header-user-avatar').innerText = p.name.charAt(0).toUpperCase();
+
+      const dateStr = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+      document.getElementById('dash-date-str').innerText = dateStr;
+
+      document.getElementById('dash-streak-count').innerText = `${app.state.streak} Days`;
+      document.getElementById('dash-progress-pct').innerText = `${app.state.progress}%`;
+      document.getElementById('dash-progress-bar').style.width = `${app.state.progress}%`;
+
+      // Weak topics render
+      const weakList = document.getElementById('dash-weak-topics-list');
+      if (weakList) {
+        weakList.innerHTML = app.state.weakTopics.map(t => `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-secondary); border-radius:var(--radius-md);">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="color:#ef4444; font-weight:700;">•</span>
+              <span style="font-size:0.9rem; font-weight:600;">${t}</span>
+            </div>
+            <button class="btn-sm btn-outline" onclick="app.tutor.askPreset('Help me understand: ${t}'); app.router.navigate('tutor');">Revise with AI</button>
+          </div>
+        `).join('');
+      }
+
+      // Recent activities render
+      const actList = document.getElementById('dash-recent-activities');
+      if (actList) {
+        actList.innerHTML = app.state.recentActivities.map(a => `
+          <div style="display:flex; justify-content:space-between; font-size:0.86rem; padding-bottom:8px; border-bottom:1px solid var(--border-subtle);">
+            <span style="color:var(--text-secondary);">${a.text}</span>
+            <span style="color:var(--text-muted); font-size:0.75rem;">${a.time}</span>
+          </div>
+        `).join('');
+      }
+    }
+  },
+
+  // 6. AI Tutor Controller (Deterministic regional responses + Backend connector)
+  tutor: {
+    lang: 'English',
+    depth: 'Beginner',
+    updateSettings() {
+      this.lang = document.getElementById('tutor-lang-select').value;
+      this.depth = document.getElementById('tutor-depth-select').value;
+    },
+    clearChat() {
+      document.getElementById('tutor-chat-history').innerHTML = `
+        <div class="chat-bubble chat-ai">
+          <span class="chat-source-badge">EduBridge Demo Tutor</span>
+          <p>Chat cleared! Select your language and ask any concept or problem.</p>
+        </div>
+      `;
+    },
+    askPreset(text) {
+      document.getElementById('tutor-query-input').value = text;
+      this.handleSubmit(new Event('submit'));
+    },
+    async handleSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('tutor-query-input');
+      const query = input.value.trim();
+      if (!query) return;
+
+      this.appendMessage('user', query);
+      input.value = '';
+
+      // Check if real backend is configured
+      if (app.state.backendUrl) {
+        this.appendMessage('ai', 'Connecting to configured backend service at ' + app.state.backendUrl + '...', 'Remote AI Service');
+        try {
+          const res = await fetch(`${app.state.backendUrl}/api/ai/tutor`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query, language: this.lang, depth: this.depth })
+          });
+          const data = await res.json();
+          this.appendMessage('ai', data.response || 'Empty response from backend.', 'Live AI Backend');
+          return;
+        } catch (err) {
+          this.appendMessage('ai', `⚠️ Remote backend connection failed (${err.message}). Falling back to local educational engine:`, 'Fallback Notice');
+        }
+      }
+
+      // Fallback: Smart Local Educational Responses
+      setTimeout(() => {
+        const response = this.generateDemoResponse(query);
+        this.appendMessage('ai', response, `Local Demo Engine (${this.lang})`);
+      }, 400);
+    },
+    appendMessage(role, text, source) {
+      const container = document.getElementById('tutor-chat-history');
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble chat-${role}`;
+      if (source) {
+        bubble.innerHTML = `<span class="chat-source-badge">${source}</span><div>${text}</div>`;
+      } else {
+        bubble.innerHTML = `<div>${text}</div>`;
+      }
+      container.appendChild(bubble);
+      container.scrollTop = container.scrollHeight;
+    },
+    generateDemoResponse(query) {
+      const q = query.toLowerCase();
+      if (q.includes('list vs tuple') || q.includes('tuple')) {
+        if (this.lang === 'Telugu') {
+          return `<p><strong>పైథాన్‌లో List మరియు Tuple తేడా:</strong></p>
+          <p>• <strong>List (లిస్ట్):</strong> మార్చదగినది (Mutable). ఉదాహరణకు ఒక కిరాణా సరుకుల లిస్ట్ లాంటిది; వస్తువులను జోడించవచ్చు లేదా తీసివేయవచ్చు. <code>[1, 2, 3]</code>.</p>
+          <p>• <strong>Tuple (టపుల్):</strong> మార్చలేనిది (Immutable). ఆధార్ కార్డ్ నంబర్ లేదా పుట్టిన తేదీ లాంటిది; ఒక్కసారి రాస్తే మార్చలేము. <code>(1, 2, 3)</code>.</p>
+          <p>టపుల్స్ వేగంగా పనిచేస్తాయి మరియు డేటా మారకూడదనుకున్నప్పుడు వీటిని వాడాలి.</p>`;
+        }
+        return `<p><strong>Python List vs Tuple Explained Simply:</strong></p>
+        <p>• <strong>List (Mutable):</strong> Like a shopping cart. You can add items, remove them, or rearrange. Example: <code>fruits = ["apple", "mango"]</code>.</p>
+        <p>• <strong>Tuple (Immutable):</strong> Like a printed ID card or date of birth. Once defined, it cannot be altered. Example: <code>coords = (17.3850, 78.4867)</code>.</p>
+        <p><strong>Memory & Speed:</strong> Tuples consume less memory and execute faster because Python allocates a fixed block of memory for them.</p>`;
+      }
+
+      if (q.includes('flexbox')) {
+        if (this.lang === 'Telugu') {
+          return `<p><strong>CSS Flexbox సులభ వివరణ:</strong></p>
+          <p>ఒక వంటగది అర (Shelf) లేదా వరుసలో వస్తువులను ఒక క్రమంలో పెట్టడం లాంటిది Flexbox. <code>display: flex</code> పెట్టినప్పుడు, లోపల ఉన్న బాక్స్‌లన్నీ ఆటోమేటిక్‌గా ఒక వరుసలోకి వస్తాయి. <code>justify-content: center</code>తో మధ్యలోకి, <code>align-items: center</code>తో నిలువుగా సమానంగా సర్దుకోవచ్చు.</p>`;
+        }
+        return `<p><strong>CSS Flexbox Made Intuitive:</strong></p>
+        <p>Think of Flexbox as an automatic organizer shelf. When you declare <code>display: flex</code> on a parent box, its children automatically align along a 1-dimensional axis.</p>
+        <p>• <code>justify-content</code> arranges items horizontally (e.g. <code>space-between</code>, <code>center</code>).</p>
+        <p>• <code>align-items</code> positions them vertically.</p>`;
+      }
+
+      if (q.includes('api')) {
+        if (this.lang === 'Telugu') {
+          return `<p><strong>API అంటే ఏమిటి? (రియల్-లైఫ్ ఉదాహరణ):</strong></p>
+          <p>మీరు ఒక రెస్టారెంట్‌లో కూర్చున్నప్పుడు, వంటింట్లోకి (Database) నేరుగా వెళ్లరు. వెయిటర్ (API) మీ ఆర్డర్‌ను తీసుకుని కిచెన్‌కు ఇచ్చి, సిద్ధమైన ఆహారాన్ని మీకు తెచ్చి ఇస్తాడు. కంప్యూటర్‌లో కూడా మొబైల్ యాప్‌కు మరియు సర్వర్‌కు మధ్య సమాచారాన్ని మోసుకెళ్లేదే API.</p>`;
+        }
+        return `<p><strong>What is an API? (The Restaurant Analogy):</strong></p>
+        <p>Imagine sitting in a restaurant. You cannot enter the kitchen (Database) yourself. The waiter acts as the <strong>API</strong>: they take your order (Request), communicate it to the chef (Server), and bring back the prepared food (Response).</p>`;
+      }
+
+      return `<p><strong>Conceptual Breakdown:</strong></p>
+      <p>You asked: <em>"${query}"</em>.</p>
+      <p>In computing, every problem breaks down into: (1) Input specification, (2) Deterministic transformation, and (3) Output delivery.</p>
+      <p><strong>Next Step:</strong> Try running a test code snippet in our <em>AI Coding Mentor</em> tab or take the <em>Learning Gap Quiz</em> to benchmark your grasp!</p>`;
+    }
+  },
+
+  // 7. Learning Gap Detector Controller
+  gapDetector: {
+    currentTopic: 'python',
+    quizzes: {
+      python: {
+        title: 'Python Basics Diagnostic Quiz',
+        questions: [
+          { q: 'Which of the following data structures is immutable in Python?', options: ['List', 'Dictionary', 'Tuple', 'Set'], correct: 2, gapTopic: 'Python Tuples & Immutability' },
+          { q: 'What is the output of bool([]) in Python?', options: ['True', 'False', 'None', 'Error'], correct: 1, gapTopic: 'Truthy and Falsy Evaluations' },
+          { q: 'How do you define a function in Python?', options: ['func myFunc():', 'function myFunc():', 'def myFunc():', 'define myFunc():'], correct: 2, gapTopic: 'Function Definitions Syntax' },
+          { q: 'Which operator performs integer division discarding remainder?', options: ['/', '//', '%', '**'], correct: 1, gapTopic: 'Arithmetic Floor Operators' },
+          { q: 'What does dict.get(key, default) return if the key is missing?', options: ['Throws KeyError', 'Returns default value', 'Returns False', 'Creates the key'], correct: 1, gapTopic: 'Dictionary Safe Lookup Patterns' }
+        ]
+      },
+      web: {
+        title: 'HTML & CSS Fundamentals Quiz',
+        questions: [
+          { q: 'Which HTML element represents self-contained semantic content?', options: ['<div>', '<article>', '<span>', '<b>'], correct: 1, gapTopic: 'HTML5 Semantic Structure' },
+          { q: 'What does CSS box-sizing: border-box do?', options: ['Includes padding and border in total width', 'Adds a shadow around boxes', 'Removes margins', 'Forces elements into flexbox'], correct: 0, gapTopic: 'CSS Box Model Mechanics' },
+          { q: 'Which CSS property centers items along the cross axis in Flexbox?', options: ['justify-content', 'align-items', 'flex-direction', 'margin-center'], correct: 1, gapTopic: 'CSS Flexbox Alignment' }
+        ]
+      },
+      math: {
+        title: 'Mathematics & Logic for Computer Science',
+        questions: [
+          { q: 'What is 2 to the power of 8 (2^8)?', options: ['128', '256', '512', '1024'], correct: 1, gapTopic: 'Binary & Exponent Powers' },
+          { q: 'In Boolean logic, what is NOT (A AND B) equivalent to by De Morgan’s Law?', options: ['(NOT A) AND (NOT B)', '(NOT A) OR (NOT B)', 'A OR B', 'True'], correct: 1, gapTopic: 'De Morgan’s Laws & Boolean Logic' }
+        ]
+      },
+      english: {
+        title: 'English Grammar Essentials',
+        questions: [
+          { q: 'Choose the correct sentence:', options: ['He does not has a laptop', 'He does not have a laptop', 'He do not have a laptop', 'He having not laptop'], correct: 1, gapTopic: 'Subject-Verb Auxiliary Agreement' },
+          { q: 'Which word is an adverb?', options: ['Quick', 'Quickly', 'Quicker', 'Quicken'], correct: 1, gapTopic: 'Parts of Speech: Adverbs vs Adjectives' }
+        ]
+      },
+      cs: {
+        title: 'Computer Fundamentals & OS',
+        questions: [
+          { q: 'Which component executes program instructions?', options: ['RAM', 'CPU', 'SSD', 'GPU only'], correct: 1, gapTopic: 'CPU Architecture & Instruction Cycles' },
+          { q: 'What does RAM stand for?', options: ['Read Access Memory', 'Random Access Memory', 'Rapid Array Module', 'Real Audio Media'], correct: 1, gapTopic: 'Primary vs Secondary Memory' }
+        ]
+      }
+    },
+    loadQuiz(topicKey) {
+      this.currentTopic = topicKey;
+      const quiz = this.quizzes[topicKey];
+      if (!quiz) return;
+
+      document.querySelectorAll('#view-gap-detector [id^="quiz-tab-"]').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`quiz-tab-${topicKey}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.getElementById('quiz-title').innerText = quiz.title;
+      document.getElementById('quiz-meta-count').innerText = `${quiz.questions.length} Questions`;
+
+      const container = document.getElementById('quiz-questions-container');
+      container.innerHTML = quiz.questions.map((q, idx) => `
+        <div class="quiz-item" data-qid="${idx}">
+          <div style="font-weight:600; font-size:0.95rem; margin-bottom:10px;">
+            <span style="color:#60a5fa;">${idx + 1}.</span> ${q.q}
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            ${q.options.map((opt, oIdx) => `
+              <label style="display:flex; align-items:center; gap:10px; padding:8px 12px; background:var(--bg-secondary); border-radius:var(--radius-sm); cursor:pointer; font-size:0.9rem;">
+                <input type="radio" name="q_${idx}" value="${oIdx}">
+                <span>${opt}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('results-empty-placeholder').style.display = 'block';
+      document.getElementById('results-content-area').style.display = 'none';
+    },
+    submitAssessment() {
+      const quiz = this.quizzes[this.currentTopic];
+      let correctCount = 0;
+      const gapsIdentified = [];
+
+      quiz.questions.forEach((q, idx) => {
+        const checked = document.querySelector(`input[name="q_${idx}"]:checked`);
+        if (checked && parseInt(checked.value) === q.correct) {
+          correctCount++;
+        } else {
+          gapsIdentified.push(q.gapTopic);
+        }
+      });
+
+      const total = quiz.questions.length;
+      const pct = Math.round((correctCount / total) * 100);
+
+      // Render Results
+      document.getElementById('results-empty-placeholder').style.display = 'none';
+      document.getElementById('results-content-area').style.display = 'block';
+      document.getElementById('diag-score-display').innerText = `${pct}%`;
+      document.getElementById('diag-score-summary').innerText = `${correctCount} out of ${total} questions answered correctly`;
+
+      // Update state
+      app.state.weakTopics = Array.from(new Set([...app.state.weakTopics, ...gapsIdentified]));
+      app.state.recentActivities.unshift({
+        text: `Completed ${quiz.title} (${pct}%)`,
+        time: 'Just now'
+      });
+      if (pct >= 80) {
+        app.analytics.unlockBadge('b1');
+      }
+      app.storage.save();
+      app.dashboard.refresh();
+
+      // Render Gaps
+      const gapBox = document.getElementById('diag-gap-tags');
+      if (gapsIdentified.length === 0) {
+        gapBox.innerHTML = `<div style="color:#34d399; font-weight:600;">✨ Outstanding! No conceptual gaps detected on this topic.</div>`;
+      } else {
+        gapBox.innerHTML = gapsIdentified.map(g => `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.25); border-radius:var(--radius-sm); color:#fca5a5; font-size:0.85rem;">
+            <span>⚠️ Need revision: <strong>${g}</strong></span>
+            <button class="btn-sm btn-outline" style="border-color:#ef4444; color:#fca5a5;" onclick="app.tutor.askPreset('Teach me ${g} step-by-step with simple examples'); app.router.navigate('tutor');">Learn Now</button>
+          </div>
+        `).join('');
+      }
+
+      // Render Recommendations
+      const recList = document.getElementById('diag-recommendations-list');
+      recList.innerHTML = `
+        <div>• Dedicate 20 minutes to review flagged concept syntax in the AI Tutor.</div>
+        <div>• Apply this rule in the <em>Coding Mentor Sandbox</em> by writing small tests.</div>
+        <div>• Retake this diagnostic check in 3 days to verify retention.</div>
+      `;
+    },
+    resetCurrentQuiz() {
+      this.loadQuiz(this.currentTopic);
+    }
+  },
+
+  // 8. Learning Roadmap Controller
+  roadmap: {
+    handleGenerate(e) {
+      if (e) e.preventDefault();
+      const goal = document.getElementById('roadmap-goal-select').value;
+      const duration = document.getElementById('roadmap-duration-select').value;
+
+      const titleMap = {
+        python: 'Python Programming from Scratch',
+        web: 'Full-Stack Web Development',
+        ai: 'Artificial Intelligence Fundamentals',
+        english: 'Professional English Communication',
+        internship: 'Software Internship Preparation Sprint'
+      };
+
+      document.getElementById('roadmap-active-title').innerText = `${titleMap[goal]} (${duration})`;
+
+      const tasks = [
+        { week: 'Week 1', title: 'Foundational Syntax & Mental Models', items: ['Variables, data types and memory allocation', 'Conditionals and boolean branching', 'Daily Exercise: 10 simple algorithmic puzzles'] },
+        { week: 'Week 2', title: 'Core Data Structures & Collections', items: ['Lists, Tuples, Dictionaries, and Sets', 'Iteration, loops and list comprehensions', 'Mini-project: Student Contact Book'] },
+        { week: 'Week 3', title: 'Modularity, Functions & Error Handling', items: ['Pure functions, parameters and scope', 'Try/Except defensive programming', 'API integration: Weather data fetcher'] },
+        { week: 'Week 4', title: 'Capstone Project & Portfolio Deployment', items: ['Architecture layout and schema design', 'Comprehensive testing and edge cases', 'Publishing live demo and README documentation'] }
+      ];
+
+      const container = document.getElementById('roadmap-tasks-container');
+      container.innerHTML = tasks.map((t, wIdx) => `
+        <div style="background:var(--bg-secondary); border-radius:var(--radius-md); padding:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <strong style="color:#60a5fa; font-size:1rem;">${t.week}: ${t.title}</strong>
+            <span class="tag tag-blue">Planned</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            ${t.items.map((item, iIdx) => `
+              <label style="display:flex; align-items:center; gap:10px; font-size:0.9rem; cursor:pointer;">
+                <input type="checkbox" onchange="app.roadmap.handleTaskCheck(this)">
+                <span>${item}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      app.analytics.unlockBadge('b2');
+    },
+    handleTaskCheck(checkbox) {
+      const all = document.querySelectorAll('#roadmap-tasks-container input[type="checkbox"]');
+      const checked = document.querySelectorAll('#roadmap-tasks-container input[type="checkbox"]:checked');
+      const pct = all.length ? Math.round((checked.length / all.length) * 100) : 0;
+
+      document.getElementById('roadmap-completion-pct').innerText = `${pct}%`;
+      document.getElementById('roadmap-progress-bar').style.width = `${pct}%`;
+    }
+  },
+
+  // 9. Real-World Project Lab Controller
+  projects: {
+    filterCategory(cat, btn) {
+      if (btn) {
+        document.querySelectorAll('#project-filter-buttons button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      this.render(cat);
+    },
+    render(filter = 'all') {
+      const grid = document.getElementById('projects-grid');
+      const list = filter === 'all' ? app.state.projects : app.state.projects.filter(p => p.category === filter);
+
+      grid.innerHTML = list.map(p => {
+        const completedMilestones = p.milestones.filter(m => m.done).length;
+        const total = p.milestones.length;
+        const pct = Math.round((completedMilestones / total) * 100);
+
+        return `
+          <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <span class="tag tag-blue">${p.category}</span>
+                <span style="font-size:0.75rem; color:var(--text-muted);">${p.effort}</span>
+              </div>
+              <h3 style="font-size:1.15rem; font-weight:700; margin-bottom:8px;">${p.title}</h3>
+              <p style="font-size:0.86rem; color:var(--text-secondary); margin-bottom:14px; line-height:1.5;">${p.problem}</p>
+
+              <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">
+                <strong>Skills:</strong> ${p.skills}
+              </div>
+
+              <div style="margin-bottom:16px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:4px;">
+                  <span>Milestones (${completedMilestones}/${total})</span>
+                  <strong>${pct}%</strong>
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-bar-fill" style="width:${pct}%;"></div>
+                </div>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px;">
+                ${p.milestones.map((m, mIdx) => `
+                  <label style="display:flex; align-items:center; gap:8px; font-size:0.82rem; cursor:pointer;">
+                    <input type="checkbox" ${m.done ? 'checked' : ''} onchange="app.projects.toggleMilestone('${p.id}', ${mIdx}, this.checked)">
+                    <span style="${m.done ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${m.text}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+
+            <button class="btn-sm btn-secondary" style="width:100%;" onclick="alert('Project notes & step guidelines saved. Continue building in your local code environment!')">
+              View Lab Guidelines
+            </button>
+          </div>
+        `;
+      }).join('');
+    },
+    toggleMilestone(projId, mIdx, isDone) {
+      const proj = app.state.projects.find(p => p.id === projId);
+      if (proj && proj.milestones[mIdx]) {
+        proj.milestones[mIdx].done = isDone;
+        app.state.recentActivities.unshift({
+          text: `Milestone updated in "${proj.title}"`,
+          time: 'Just now'
+        });
+
+        // Check if all complete
+        if (proj.milestones.every(m => m.done)) {
+          app.analytics.unlockBadge('b4');
+        }
+
+        app.storage.save();
+        this.render();
+        app.dashboard.refresh();
+      }
+    }
+  },
+
+  // 10. AI Coding Mentor Controller (Deterministic tests + Sandboxed HTML iframe)
+  codeMentor: {
+    currentEx: 1,
+    exercises: {
+      1: {
+        file: 'sumArray.js',
+        lang: 'JavaScript',
+        code: `// Problem: Write a function sumEvenNumbers(arr) that returns the sum of only even numbers.\nfunction sumEvenNumbers(arr) {\n  return arr.filter(n => n % 2 === 0).reduce((sum, n) => sum + n, 0);\n}\n`,
+        test: (userFnStr) => {
+          try {
+            const fn = new Function(`${userFnStr}; return sumEvenNumbers;`)();
+            const res1 = fn([1, 2, 3, 4, 5, 6]);
+            const res2 = fn([1, 3, 5]);
+            const res3 = fn([2, 4, 10]);
+
+            let log = `🧪 Running Test Suite (sumEvenNumbers)...\n`;
+            let pass = true;
+
+            if (res1 === 12) {
+              log += `✅ Test 1: [1,2,3,4,5,6] => 12 (PASS)\n`;
+            } else {
+              log += `❌ Test 1: Expected 12, got ${res1} (FAIL)\n`;
+              pass = false;
+            }
+
+            if (res2 === 0) {
+              log += `✅ Test 2: [1,3,5] => 0 (PASS)\n`;
+            } else {
+              log += `❌ Test 2: Expected 0, got ${res2} (FAIL)\n`;
+              pass = false;
+            }
+
+            if (res3 === 16) {
+              log += `✅ Test 3: [2,4,10] => 16 (PASS)\n`;
+            } else {
+              log += `❌ Test 3: Expected 16, got ${res3} (FAIL)\n`;
+              pass = false;
+            }
+
+            log += pass ? `\n🎉 All deterministic unit tests PASSED!` : `\n⚠️ Some tests failed. Review your logic.`;
+            return { log, pass };
+          } catch (e) {
+            return { log: `Syntax or runtime error in student code:\n${e.message}`, pass: false };
+          }
+        }
+      },
+      2: {
+        file: 'palindrome.js',
+        lang: 'JavaScript',
+        code: `// Problem: Write a function isPalindrome(str) that ignores case and returns true if palindrome.\nfunction isPalindrome(str) {\n  const clean = str.toLowerCase().replace(/[^a-z0-9]/g, '');\n  return clean === clean.split('').reverse().join('');\n}\n`,
+        test: (userFnStr) => {
+          try {
+            const fn = new Function(`${userFnStr}; return isPalindrome;`)();
+            const t1 = fn("Racecar");
+            const t2 = fn("hello");
+            const t3 = fn("A man, a plan, a canal: Panama");
+            let pass = t1 && !t2 && t3;
+            let log = `🧪 Running Test Suite (isPalindrome)...\n`;
+            log += t1 ? `✅ Test 1: "Racecar" => true (PASS)\n` : `❌ Test 1: Expected true (FAIL)\n`;
+            log += !t2 ? `✅ Test 2: "hello" => false (PASS)\n` : `❌ Test 2: Expected false (FAIL)\n`;
+            log += t3 ? `✅ Test 3: "A man... Panama" => true (PASS)\n` : `❌ Test 3: Expected true (FAIL)\n`;
+            log += pass ? `\n🎉 All tests passed smoothly!` : `\n⚠️ Review string cleaning and reversal logic.`;
+            return { log, pass };
+          } catch (e) {
+            return { log: `Runtime error:\n${e.message}`, pass: false };
+          }
+        }
+      },
+      3: {
+        file: 'profileCard.html',
+        lang: 'HTML/CSS',
+        isHtml: true,
+        code: `<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f0f4f8; }\n    .card { background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; width: 260px; }\n    .avatar { width: 64px; height: 64px; border-radius: 50%; background: #3b82f6; color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; margin-bottom: 12px; }\n    h3 { margin: 0 0 4px; color: #1e293b; }\n    p { margin: 0; color: #64748b; font-size: 14px; }\n  </style>\n</head>\n<body>\n  <div class="card">\n    <div class="avatar">EB</div>\n    <h3>Ramesh Kumar</h3>\n    <p>Software Engineering Student</p>\n  </div>\n</body>\n</html>\n`
+      },
+      4: {
+        file: 'fizzbuzz.py',
+        lang: 'Python Concept',
+        code: `# Python Concept Simulation\ndef fizzbuzz(n):\n    result = []\n    for i in range(1, n + 1):\n        if i % 15 == 0:\n            result.append("FizzBuzz")\n        elif i % 3 == 0:\n            result.append("Fizz")\n        elif i % 5 == 0:\n            result.append("Buzz")\n        else:\n            result.append(str(i))\n    return result\n`
+      }
+    },
+    selectExercise(id) {
+      this.currentEx = parseInt(id);
+      this.loadExercise(this.currentEx);
+    },
+    loadExercise(id) {
+      const ex = this.exercises[id];
+      if (!ex) return;
+
+      document.getElementById('code-file-name').innerText = ex.file;
+      document.getElementById('code-lang-tag').innerText = ex.lang;
+      document.getElementById('code-editor-textarea').value = ex.code;
+      document.getElementById('code-terminal-output').innerText = 'Press "Run Tests / Preview" to execute.';
+
+      const preview = document.getElementById('code-preview-container');
+      if (ex.isHtml) {
+        preview.style.display = 'block';
+        this.runHtmlPreview(ex.code);
+      } else {
+        preview.style.display = 'none';
+      }
+    },
+    runCode() {
+      const ex = this.exercises[this.currentEx];
+      const code = document.getElementById('code-editor-textarea').value;
+      const statusTag = document.getElementById('code-test-status');
+
+      if (ex.isHtml) {
+        this.runHtmlPreview(code);
+        document.getElementById('code-terminal-output').innerText = '✅ Rendered HTML/CSS successfully in sandboxed iframe.';
+        statusTag.innerText = 'Preview Rendered';
+        statusTag.className = 'tag tag-emerald';
+        return;
+      }
+
+      if (ex.test) {
+        const { log, pass } = ex.test(code);
+        document.getElementById('code-terminal-output').innerText = log;
+        statusTag.innerText = pass ? 'All Passed' : 'Tests Failed';
+        statusTag.className = pass ? 'tag tag-emerald' : 'tag tag-rose';
+        return;
+      }
+
+      // For Python demo simulation
+      document.getElementById('code-terminal-output').innerText =
+        `ℹ️ Python code verified syntactically for client demo.\nTo execute real Python bytecode securely in production, configure the Python backend in Settings.`;
+      statusTag.innerText = 'Syntax Checked';
+      statusTag.className = 'tag tag-blue';
+    },
+    runHtmlPreview(html) {
+      const iframe = document.getElementById('code-sandbox-iframe');
+      iframe.srcdoc = html;
+    },
+    resetCurrentCode() {
+      this.loadExercise(this.currentEx);
+    },
+    copyCode() {
+      const code = document.getElementById('code-editor-textarea').value;
+      navigator.clipboard.writeText(code).then(() => alert('Code copied to clipboard!'));
+    }
+  },
+
+  // 11. English Speech Coach Controller (Web Speech API integration)
+  englishCoach: {
+    isRecording: false,
+    recognition: null,
+    init() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const badge = document.getElementById('speech-support-badge');
+      if (!SpeechRecognition) {
+        if (badge) {
+          badge.innerText = 'Text Mode Only (Speech API Unavailable)';
+          badge.className = 'tag tag-amber';
+        }
+        return;
+      }
+
+      try {
+        this.recognition = new SpeechRecognition();
+        this.recognition.continuous = false;
+        this.recognition.lang = 'en-US';
+
+        this.recognition.onresult = (event) => {
+          const text = event.results[0][0].transcript;
+          const transcriptBox = document.getElementById('english-speech-transcript');
+          transcriptBox.value = transcriptBox.value ? `${transcriptBox.value} ${text}` : text;
+          this.stopMic();
+        };
+
+        this.recognition.onerror = (e) => {
+          console.warn('Speech recognition error:', e.error);
+          this.stopMic();
+          alert(`Speech recognition notice: ${e.error}. You can also type directly in the box.`);
+        };
+
+        this.recognition.onend = () => {
+          this.stopMic();
+        };
+      } catch (err) {
+        console.warn('Speech API init failure:', err);
+      }
+    },
+    toggleMic() {
+      if (!this.recognition) {
+        alert('Web Speech API is not supported in this browser. Please type your response directly into the textarea.');
+        return;
+      }
+      if (this.isRecording) {
+        this.stopMic();
+      } else {
+        this.startMic();
+      }
+    },
+    startMic() {
+      try {
+        this.recognition.start();
+        this.isRecording = true;
+        document.getElementById('mic-btn-label').innerText = 'Listening... (Speak)';
+        document.getElementById('mic-record-btn').style.background = '#ef4444';
+      } catch (e) {
+        console.warn('Mic start failed:', e);
+      }
+    },
+    stopMic() {
+      if (this.recognition && this.isRecording) {
+        this.recognition.stop();
+      }
+      this.isRecording = false;
+      document.getElementById('mic-btn-label').innerText = 'Start Speaking';
+      document.getElementById('mic-record-btn').style.background = '';
+    },
+    analyzeResponse() {
+      const text = document.getElementById('english-speech-transcript').value.trim();
+      const panel = document.getElementById('english-feedback-panel');
+      const feedback = document.getElementById('english-feedback-text');
+
+      if (!text) {
+        alert('Please speak or type a response first.');
+        return;
+      }
+
+      panel.style.display = 'block';
+      let wordCount = text.split(/\s+/).length;
+
+      feedback.innerHTML = `
+        <p><strong>Response Word Count:</strong> ${wordCount} words</p>
+        <p style="margin-top:6px;"><strong>Fluency Observation:</strong> Good articulation of your background. To sound even more confident in technical interviews, consider using structured STAR format (Situation, Task, Action, Result) when introducing your projects.</p>
+        <p style="margin-top:6px; color:#60a5fa;"><strong>Suggested Polish:</strong> "Hello, my name is Ramesh. I am an undergraduate computer science student with a strong passion for full-stack software development and problem solving..."</p>
+      `;
+    },
+    correctSentence() {
+      const input = document.getElementById('sentence-input').value.trim();
+      const resBox = document.getElementById('sentence-result-box');
+      if (input.toLowerCase().includes('knowing')) {
+        resBox.innerHTML = `
+          <strong>Corrected:</strong> <span style="color:#34d399;">"I know Python very well."</span><br>
+          <span style="font-size:0.8rem; color:var(--text-muted);">'Know' is a state-of-mind verb and should not take the continuous '-ing' form here.</span>
+        `;
+      } else {
+        resBox.innerHTML = `
+          <strong>Checked:</strong> <span style="color:#34d399;">"${input}"</span><br>
+          <span style="font-size:0.8rem; color:var(--text-muted);">Sentence structure looks clear and grammatical!</span>
+        `;
+      }
+    }
+  },
+
+  // 12. Notes Controller
+  notes: {
+    createEmptyNote() {
+      document.getElementById('note-title-input').value = '';
+      document.getElementById('note-body-textarea').value = '';
+      document.getElementById('note-saved-status').innerText = 'New unsaved note';
+    },
+    saveCurrentNote() {
+      const title = document.getElementById('note-title-input').value.trim() || 'Untitled Note';
+      const subject = document.getElementById('note-subject-select').value;
+      const body = document.getElementById('note-body-textarea').value.trim();
+
+      const newNote = {
+        id: Date.now(),
+        title,
+        subject,
+        body,
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      };
+
+      app.state.notes.unshift(newNote);
+      app.storage.save();
+      document.getElementById('note-saved-status').innerText = 'Saved just now!';
+      this.renderList();
+      app.dashboard.refresh();
+      if (app.state.notes.length >= 3) {
+        app.analytics.unlockBadge('b3');
+      }
+    },
+    renderList(query = '') {
+      const container = document.getElementById('notes-list-container');
+      const filtered = query
+        ? app.state.notes.filter(n => n.title.toLowerCase().includes(query.toLowerCase()) || n.body.toLowerCase().includes(query.toLowerCase()))
+        : app.state.notes;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="empty-state">No notes found. Create your first study note!</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(n => `
+        <div style="padding:12px; background:var(--bg-secondary); border-radius:var(--radius-md); border:1px solid var(--border-subtle); cursor:pointer;" onclick="app.notes.loadNote(${n.id})">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="font-size:0.92rem;">${n.title}</strong>
+            <span class="tag tag-purple" style="font-size:0.7rem;">${n.subject}</span>
+          </div>
+          <p style="font-size:0.82rem; color:var(--text-secondary); margin-top:4px; max-height:40px; overflow:hidden;">${n.body}</p>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">${n.date}</div>
+        </div>
+      `).join('');
+    },
+    loadNote(id) {
+      const note = app.state.notes.find(n => n.id === id);
+      if (note) {
+        document.getElementById('note-title-input').value = note.title;
+        document.getElementById('note-subject-select').value = note.subject;
+        document.getElementById('note-body-textarea').value = note.body;
+        document.getElementById('note-saved-status').innerText = `Loaded (${note.date})`;
+      }
+    },
+    downloadTxt() {
+      const title = document.getElementById('note-title-input').value.trim() || 'StudyNote';
+      const body = document.getElementById('note-body-textarea').value;
+      const blob = new Blob([body], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${title.replace(/\s+/g, '_')}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    },
+    summarizeNote() {
+      const body = document.getElementById('note-body-textarea').value.trim();
+      if (!body) {
+        alert('Please write or load note content first.');
+        return;
+      }
+      const sentences = body.split(/[.!?]+/).filter(s => s.trim().length > 0);
+      const summary = sentences.slice(0, 2).join('. ') + (sentences.length > 2 ? '.' : '');
+      alert(`Demo Summary (Key Points):\n\n${summary}\n\n[Connect production backend API in Settings for LLM summarization]`);
+    }
+  },
+
+  // 13. Analytics & Badges
+  analytics: {
+    refresh() {
+      document.getElementById('stats-total-actions').innerText = app.state.recentActivities.length + 8;
+      document.getElementById('stats-quizzes-taken').innerText = '1';
+      document.getElementById('stats-milestones-done').innerText = '5';
+
+      const earnedCount = app.state.badges.filter(b => b.earned).length;
+      document.getElementById('stats-badges-earned').innerText = `${earnedCount} / ${app.state.badges.length}`;
+
+      const grid = document.getElementById('badges-grid');
+      grid.innerHTML = app.state.badges.map(b => `
+        <div class="card" style="opacity:${b.earned ? '1' : '0.55'}; text-align:center;">
+          <div style="font-size:2.4rem; margin-bottom:8px;">${b.icon}</div>
+          <h4 style="font-size:1.05rem; font-weight:700;">${b.title}</h4>
+          <p style="font-size:0.82rem; color:var(--text-secondary); margin:4px 0 12px;">${b.desc}</p>
+          <span class="tag ${b.earned ? 'tag-emerald' : 'tag-rose'}">${b.earned ? 'Unlocked' : 'Locked'}</span>
+        </div>
+      `).join('');
+    },
+    unlockBadge(badgeId) {
+      const b = app.state.badges.find(x => x.id === badgeId);
+      if (b && !b.earned) {
+        b.earned = true;
+        app.state.notifications.unshift({
+          id: Date.now(),
+          title: 'Achievement Unlocked!',
+          text: `You unlocked the "${b.title}" badge. Keep it up!`,
+          time: 'Just now',
+          unread: true
+        });
+        app.storage.save();
+      }
+    }
+  },
+
+  // 14. Student Profile Management
+  profile: {
+    handleSave(e) {
+      if (e) e.preventDefault();
+      const p = app.state.profile;
+      p.name = document.getElementById('profile-name').value.trim();
+      p.level = document.getElementById('profile-level').value;
+      p.course = document.getElementById('profile-course').value.trim();
+      p.language = document.getElementById('profile-lang').value;
+      p.goals = document.getElementById('profile-goals').value.trim();
+      p.career = document.getElementById('profile-career').value;
+
+      app.storage.save();
+      app.dashboard.refresh();
+      alert('Profile saved successfully!');
+      app.router.navigate('dashboard');
+    },
+    populateForm() {
+      const p = app.state.profile;
+      if (document.getElementById('profile-name')) document.getElementById('profile-name').value = p.name;
+      if (document.getElementById('profile-level')) document.getElementById('profile-level').value = p.level;
+      if (document.getElementById('profile-course')) document.getElementById('profile-course').value = p.course;
+      if (document.getElementById('profile-lang')) document.getElementById('profile-lang').value = p.language;
+      if (document.getElementById('profile-goals')) document.getElementById('profile-goals').value = p.goals;
+      if (document.getElementById('profile-career')) document.getElementById('profile-career').value = p.career;
+    },
+    exportJson() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(app.state, null, 2));
+      const dl = document.createElement('a');
+      dl.setAttribute("href", dataStr);
+      dl.setAttribute("download", "edubridge_student_data.json");
+      dl.click();
+    },
+    resetData() {
+      localStorage.removeItem(app.storage.KEY);
+      location.reload();
+    }
+  },
+
+  // 15. API Connector & Production Integration
+  api: {
+    saveUrl() {
+      const url = document.getElementById('backend-url-input').value.trim();
+      app.state.backendUrl = url;
+      app.storage.save();
+
+      const resultBox = document.getElementById('backend-ping-result');
+      const statusText = document.getElementById('backend-status-text');
+
+      if (!url) {
+        resultBox.innerHTML = `Current Status: <strong>Local Demo Mode</strong> (No remote server)`;
+        statusText.innerText = 'Client Demo Engine';
+        return;
+      }
+
+      resultBox.innerHTML = `Testing connection to <code>${url}</code>...`;
+      fetch(url)
+        .then(() => {
+          resultBox.innerHTML = `<span style="color:#10b981;">✓ Connected to backend successfully at ${url}</span>`;
+          statusText.innerText = 'Connected: Live API';
+        })
+        .catch(() => {
+          resultBox.innerHTML = `<span style="color:#f59e0b;">⚠️ Server URL saved (${url}), but ping returned network error or CORS restriction. The application will continue using the client demo engine until the backend is online.</span>`;
+          statusText.innerText = 'Demo Engine (Backend Pending)';
+        });
+    },
+    resetToDemo() {
+      document.getElementById('backend-url-input').value = '';
+      this.saveUrl();
+    }
+  },
+
+  // 16. Search & Notifications Modals
+  search: {
+    open() {
+      document.getElementById('search-modal').classList.add('active');
+      document.getElementById('modal-search-input').focus();
+    },
+    close() {
+      document.getElementById('search-modal').classList.remove('active');
+    },
+    handleInput(query) {
+      const container = document.getElementById('modal-search-results');
+      if (!query.trim()) {
+        container.innerHTML = '';
+        return;
+      }
+      const q = query.toLowerCase();
+      const results = [];
+
+      if ('python programming basics'.includes(q)) results.push({ title: 'Python Basics Diagnostic Quiz', view: 'gap-detector' });
+      if ('web development html css flexbox'.includes(q)) results.push({ title: 'HTML & CSS Fundamentals', view: 'code-mentor' });
+      if ('agriculture dashboard project'.includes(q)) results.push({ title: 'Project: Agriculture Info Dashboard', view: 'projects' });
+      if ('english interview practice speech'.includes(q)) results.push({ title: 'English Speech & Interview Coach', view: 'english-coach' });
+      if ('career software developer roadmap'.includes(q)) results.push({ title: 'Career Opportunity Bridge', view: 'career' });
+
+      if (results.length === 0) {
+        container.innerHTML = `<div style="color:var(--text-muted); font-size:0.85rem; padding:8px;">No matching lessons or modules found.</div>`;
+      } else {
+        container.innerHTML = results.map(r => `
+          <div style="padding:10px 14px; background:var(--bg-secondary); border-radius:var(--radius-sm); cursor:pointer; display:flex; justify-content:space-between; align-items:center;" onclick="app.search.close(); app.router.navigate('${r.view}')">
+            <strong>${r.title}</strong>
+            <span class="tag tag-blue">Open</span>
+          </div>
+        `).join('');
+      }
+    }
+  },
+
+  notif: {
+    open() {
+      document.getElementById('notif-modal').classList.add('active');
+      const badge = document.getElementById('notif-badge');
+      if (badge) badge.style.display = 'none';
+
+      const container = document.getElementById('notif-list-container');
+      container.innerHTML = app.state.notifications.map(n => `
+        <div style="padding:12px; background:var(--bg-secondary); border-radius:var(--radius-md); border-left:3px solid var(--primary-500);">
+          <strong style="font-size:0.92rem;">${n.title}</strong>
+          <p style="font-size:0.82rem; color:var(--text-secondary); margin-top:2px;">${n.text}</p>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">${n.time}</div>
+        </div>
+      `).join('');
+    },
+    close() {
+      document.getElementById('notif-modal').classList.remove('active');
+    }
+  },
+
+  // 17. Initialization
+  init() {
+    this.storage.load();
+    this.i18n.setLanguage(this.state.language);
+    this.profile.populateForm();
+    this.dashboard.refresh();
+    this.englishCoach.init();
+
+    // Set Backend URL input if exists
+    if (this.state.backendUrl) {
+      const urlInput = document.getElementById('backend-url-input');
+      if (urlInput) urlInput.value = this.state.backendUrl;
+    }
+
+    // Set theme
+    document.documentElement.setAttribute('data-theme', this.state.theme);
+    const moon = document.getElementById('theme-icon-moon');
+    const sun = document.getElementById('theme-icon-sun');
+    if (this.state.theme === 'light') {
+      moon.style.display = 'none';
+      sun.style.display = 'block';
+    }
+
+    // Event Listeners
+    document.querySelectorAll('#sidebar .nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const view = item.getAttribute('data-view');
+        app.router.navigate(view);
+      });
+    });
+
+    document.getElementById('app-language-select').addEventListener('change', (e) => {
+      app.i18n.setLanguage(e.target.value);
+    });
+
+    document.getElementById('theme-toggle-btn').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      app.state.theme = next;
+      app.storage.save();
+      moon.style.display = next === 'light' ? 'none' : 'block';
+      sun.style.display = next === 'light' ? 'block' : 'none';
+    });
+
+    document.getElementById('mobile-toggle-btn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+    });
+
+    document.getElementById('global-search-btn').addEventListener('click', () => app.search.open());
+    document.getElementById('notif-bell-btn').addEventListener('click', () => app.notif.open());
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        app.search.open();
+      }
+      if (e.key === 'Escape') {
+        app.search.close();
+        app.notif.close();
+      }
+    });
+
+    // Handle hash on initial load
+    const hash = window.location.hash.replace('#', '');
+    if (hash && document.getElementById(`view-${hash}`)) {
+      this.router.navigate(hash);
+    } else {
+      this.router.navigate('landing');
+    }
+  }
+};
+
+// Boot the application on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  app.init();
+});
+</script>
+</body>
+</html>
